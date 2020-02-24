@@ -1,0 +1,3 @@
+#!/bin/sh
+echo Running Calabash...
+	    java -classpath "/home/ari/xmlcalabash-1.1.30-99/xmlcalabash-1.1.30-99.jar:/home/ari/xmlcalabash-1.1.30-99/lib/Saxon-HE-9.9.1-5.jar:/home/ari/xmlcalabash-1.1.30-99/lib/commons-logging-1.2.jar:/home/ari/xmlcalabash-1.1.30-99/lib/fop-hyph.jar:/home/ari/xmlcalabash-1.1.30-99/lib/httpclient-4.5.2.jar:/home/ari/xmlcalabash-1.1.30-99/lib/commons-codec-1.9.jar:/home/ari/xmlcalabash-1.1.30-99/lib/commons-io-2.2.jar" -Dxml.catalog.files="../../catalogs/catalog.xml" com.xmlcalabash.drivers.Main --entity-resolver org.xmlresolver.Resolver xspec-manifest-uri=(path/to/xspec/xspec-manifest.xml tmp-folder-uri=/path/to/tmp run-xspecs=true run-xspecs.xpl

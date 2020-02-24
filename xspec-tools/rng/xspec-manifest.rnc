@@ -1,0 +1,28 @@
+default namespace = "http://www.sgmlguru.org/ns/xproc/steps"
+
+start = tests
+
+tests = element tests {
+    attribute manifest { text },
+    common-attrs,
+    
+    (group+ | test+)
+
+}
+
+group = element group {
+    common-attrs,
+    
+    test+
+}
+
+test = element test {
+    attribute xslt { text },
+    attribute xspec { text },
+    attribute focus { text }?,
+    common-attrs
+    }
+
+common-attrs =
+    attribute xml:base { text }?,
+    attribute description { text }?
