@@ -233,7 +233,7 @@
                             select="'Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided'"/>
                     </cx:message>
                     
-                    <p:store encoding="UTF-8" omit-xml-declaration="false">
+                    <p:store encoding="UTF-8" omit-xml-declaration="false" indent="true">
                         <p:input port="source">
                             <p:pipe port="current" step="store-output"/>
                         </p:input>
@@ -244,7 +244,7 @@
                 </p:when>
                 <!-- If DTD -->
                 <p:otherwise>
-                    <p:store>
+                    <p:store indent="true">
                         <p:input port="source">
                             <p:pipe port="current" step="store-output"/>
                         </p:input>
@@ -271,7 +271,7 @@
                     </p:with-option>
                 </p:load>
 
-                <p:store>
+                <p:store indent="true">
                     <p:input port="source">
                         <p:pipe port="result" step="orig-file"/>
                     </p:input>

@@ -171,34 +171,10 @@
             </p:catch>
         </p:try>
         
-        <!--<p:identity name="doc-footnotes"/>
-        
-        <!-\- Extract and insert the document relations, if they exist -\->
-        <p:try>
-            <p:group>
-                <pxp:unzip name="doc-relations">
-                    <p:with-option name="href" select="$current-file"/>
-                    <p:with-option name="file" select="('word/_rels/document.xml.rels')"/>
-                </pxp:unzip>
-                
-                <p:insert position="last-child" match="/w:document" name="combined">
-                    <p:input port="source">
-                        <p:pipe port="result" step="doc-footnotes"/>
-                    </p:input>
-                    <p:input port="insertion">
-                        <p:pipe port="result" step="doc-relations"/>
-                    </p:input>
-                </p:insert>
-            </p:group>
-            <p:catch>
-                <p:identity/>
-            </p:catch>
-        </p:try>-->
-        
         <p:identity/>
         
         <!-- Store the normalised xlsx XML -->
-        <p:store>
+        <p:store indent="true">
             <p:with-option
                 name="href"
                 select="concat($output-base-uri,$diff,replace($filename,'\.(xlsx|XLSX)','.xml'))"/>
