@@ -6,6 +6,7 @@
     xmlns:c="http://www.w3.org/ns/xproc-step"
     xmlns:cx="http://xmlcalabash.com/ns/extensions"
     xmlns:sg="http://www.sgmlguru/ns/xproc/steps"
+    xmlns:fc="http://educations.com/XmlImport"
     xmlns:ccproc="http://www.corbas.co.uk/ns/xproc/steps"
     version="1.0">
 
@@ -233,7 +234,7 @@
                             select="'Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided'"/>
                     </cx:message>
                     
-                    <p:store encoding="UTF-8" omit-xml-declaration="false" indent="true">
+                    <p:store encoding="UTF-8" omit-xml-declaration="false" indent="true" cdata-section-elements="fc:field">
                         <p:input port="source">
                             <p:pipe port="current" step="store-output"/>
                         </p:input>
@@ -244,7 +245,7 @@
                 </p:when>
                 <!-- If DTD -->
                 <p:otherwise>
-                    <p:store indent="true">
+                    <p:store indent="true" cdata-section-elements="fc:field">
                         <p:input port="source">
                             <p:pipe port="current" step="store-output"/>
                         </p:input>
