@@ -22,7 +22,7 @@
 
 
     <!-- Input path -->
-    <p:option name="input-base-uri" select="'file:/home/ari/Documents/projects/colleges/poc/sources'">
+    <p:option name="input-base-uri" select="'file:/home/ari/Documents/projects/findcourses/poc/sources'">
         <p:documentation>
             <p>Source document(s) URI. Every document ending with suffix <em>$include-filter</em> in this folder and its subfolders is transformed.</p>
         </p:documentation>
@@ -42,7 +42,7 @@
     </p:option>
 
     <!-- Output base URI -->
-    <p:option name="output-base-uri" select="'file:/home/ari/Documents/projects/colleges/poc/tmp/xml'">
+    <p:option name="output-base-uri" select="'file:/home/ari/Documents/projects/findcourses/poc/tmp/xml'">
         <p:documentation>
             <p>Output base URI for the transformed files, debug, etc. Output folders for these are defined alsewhere.</p>
         </p:documentation>
@@ -163,6 +163,30 @@
                     </p:input>
                     <p:input port="insertion">
                         <p:pipe port="result" step="shared-strings"/>
+                    </p:input>
+                </p:insert>
+            </p:group>
+            <p:catch>
+                <p:identity/>
+            </p:catch>
+        </p:try>
+        
+        <p:identity name="sheets-shared-strings"/>
+        
+        <!-- Extract and insert the spreadsheet relations, if they exist -->
+        <p:try>
+            <p:group>
+                <pxp:unzip name="spreadsheet-relations">
+                    <p:with-option name="href" select="$current-file"/>
+                    <p:with-option name="file" select="('xl/worksheets/_rels/sheet1.xml.rels')"/>
+                </pxp:unzip>
+                
+                <p:insert position="last-child" match="/sml:workbook" name="combined">
+                    <p:input port="source">
+                        <p:pipe port="result" step="sheets-shared-strings"/>
+                    </p:input>
+                    <p:input port="insertion">
+                        <p:pipe port="result" step="spreadsheet-relations"/>
                     </p:input>
                 </p:insert>
             </p:group>
