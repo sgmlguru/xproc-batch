@@ -17,12 +17,12 @@ XProc pipeline to extract Word ML content from a docx archive in an input base U
 
 ## extract-from-docx.xpl
 
-XProc library step to extract content from a docx archive.
+XProc library step to extract content from a docx archive. Basically this extracts and normalises some, but not all, of the XML in the zip archive. The limitations have been dictated by my current needs.
 
 
 ## extract-from-xlsx.xpl
 
-XProc library step to extract content from an xlsx archive.
+XProc library step to extract content from an xlsx archive. Basically this extracts and normalises some, but not all, of the XML in the zip archive. The limitations have been dictated by my current needs.
 
 
 ## save-debug.xpl
