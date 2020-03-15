@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:directory xml:base="file:/home/ari/Documents/projects/findcourses/poc/sources/" name="sources"
+    xmlns:c="http://www.w3.org/ns/xproc-step">
+    <c:file xml:base="Morley_College.xlsx" name="Morley_College.xlsx"/>
+    <c:file xml:base="Activate_Learning.xlsx" name="Activate_Learning.xlsx"/>
+    <c:file xml:base="Surrey_Adult_Learning.xlsx" name="Surrey_Adult_Learning.xlsx"/>
+    <c:directory xml:base="subdir/">
+        <c:file xml:base="myfile.xml" name="myfile.xml"/>
+    </c:directory>
+</c:directory>

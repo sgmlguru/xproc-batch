@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../3.0-grammar/build/xproc30.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <p:declare-step
     type="sg:extract-from-docx"
     name="extract-from-docx"
@@ -9,14 +10,23 @@
     xmlns:ccproc="http://www.corbas.co.uk/ns/xproc/steps"
     xmlns:pxp="http://exproc.org/proposed/steps"
     xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-    version="1.0">
+    version="3.0">
     
-    <p:input port="xslt-params" kind="parameter"/>
-
+    
+    <!-- XProc Tools -->
+    <p:import href="../xproc-tools/xproc/recursive-directory-list.xpl.xml"/>
+    <p:import href="../xproc-tools/xproc/load-sequence-from-file.xpl.xml"/>
+    <p:import href="../xproc-tools/xproc/threaded-xslt.xpl.xml"/>
+    
+    <!-- Calabash extensions -->
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    
     
     <p:output port="result" sequence="true">
         <p:pipe port="result" step="last"/>
     </p:output>
+    
+    
 
 
     <!-- Input path -->
@@ -53,35 +63,26 @@
     <p:option name="debug" select="'false'"/>
 
     
-    <!-- XProc Tools -->
-    <p:import href="../xproc-tools/xproc/recursive-directory-list.xpl"/>
-    <p:import href="../xproc-tools/xproc/load-sequence-from-file.xpl"/>
-    <p:import href="../xproc-tools/xproc/threaded-xslt.xpl"/>
-
-    <!-- Calabash extensions -->
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
-    
-
     <!-- Input documents list -->
-    <ccproc:recursive-directory-list name="source-files">
+    <p:directory-list name="source-files">
         <p:with-option name="path" select="$input-base-uri"/>
         <!-- Add @uri to c:file elements -->
-        <p:with-option name="resolve" select="'true'"/>
+        <!--<p:with-option name="resolve" select="'true'"/>-->
         <p:with-option name="include-filter" select="$include-filter"/>
         <p:with-option name="exclude-filter" select="$exclude-filter"/>
-    </ccproc:recursive-directory-list>
+    </p:directory-list>
     
     <!-- URI-encode the directory listing -->
     <p:xslt name="uri-encoded-sources">
-        <p:input port="source">
+        <p:with-input port="source">
             <p:pipe port="result" step="source-files"/>
-        </p:input>
-        <p:input port="stylesheet">
+        </p:with-input>
+        <p:with-input port="stylesheet">
             <p:document href="xslt/uri-encode-dir-listing.xsl"/>
-        </p:input>
-        <p:input port="parameters">
-            <p:pipe port="xslt-params" step="extract-from-docx"/>
-        </p:input>
+        </p:with-input>
+        <p:with-input port="parameters">
+            <p:empt/>
+        </p:with-input>
     </p:xslt>
 
     <p:sink/>
@@ -89,12 +90,9 @@
 
     <!-- Transform documents -->
     <p:for-each name="transform-batch">
-
+        <p:with-input port="source" pipe="result@uri-encoded-sources"/>
+        
         <p:output port="result" primary="true" sequence="true"/>
-
-        <p:iteration-source select="//c:file">
-            <p:pipe port="result" step="uri-encoded-sources"/>
-        </p:iteration-source>
         
         <!-- Currently processed file, including path -->
         <p:variable name="current-file" select="/c:file/@uri"/>
@@ -132,12 +130,12 @@
                 
                 
                 <p:insert position="last-child" match="/w:document">
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:pipe port="result" step="doc"/>
-                    </p:input>
-                    <p:input port="insertion">
+                    </p:with-input>
+                    <p:with-input port="insertion">
                         <p:pipe port="result" step="numbering"/>
-                    </p:input>
+                    </p:with-input>
                 </p:insert>
             </p:group>
             <p:catch>
@@ -156,12 +154,12 @@
                 </pxp:unzip>
                 
                 <p:insert position="last-child" match="/w:document" name="combined">
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:pipe port="result" step="doc-num"/>
-                    </p:input>
-                    <p:input port="insertion">
+                    </p:with-input>
+                    <p:with-input port="insertion">
                         <p:pipe port="result" step="footnotes"/>
-                    </p:input>
+                    </p:with-input>
                 </p:insert>
             </p:group>
             <p:catch>
@@ -180,12 +178,12 @@
                 </pxp:unzip>
                 
                 <p:insert position="last-child" match="/w:document" name="combined">
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:pipe port="result" step="doc-footnotes"/>
-                    </p:input>
-                    <p:input port="insertion">
+                    </p:with-input>
+                    <p:with-input port="insertion">
                         <p:pipe port="result" step="doc-relations"/>
-                    </p:input>
+                    </p:with-input>
                 </p:insert>
             </p:group>
             <p:catch>
@@ -203,9 +201,9 @@
         </p:store>
         
         <p:identity>
-            <p:input port="source">
+            <p:with-input port="source">
                 <p:empty/>
-            </p:input>
+            </p:with-input>
         </p:identity>
 
     </p:for-each>
@@ -213,9 +211,9 @@
 
     <!-- We need an output so this will do -->
     <p:identity name="last">
-        <p:input port="source">
+        <p:with-input port="source">
             <p:pipe port="result" step="transform-batch"/>
-        </p:input>
+        </p:with-input>
     </p:identity>
 
 
