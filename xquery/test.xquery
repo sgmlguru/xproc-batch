@@ -6,8 +6,9 @@ let $source := '/db/test/sources/input.xml'
 
 let $xslt-seq := fc:load-manifest('/db/repos/xslt-pipeline/pipelines/test-manifest.xml')
 
+let $debug := true()
+
 (: Investigates removing the topmost XSLT from the sequence of loaded XSLT stylesheets :)
 let $remove-top := <root>{fc:remove-top($xslt-seq)}</root>
 
-return fc:transform(doc($source),$xslt-seq)
-
+return fc:transform(doc($source),$xslt-seq,$debug)

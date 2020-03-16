@@ -25,9 +25,22 @@ declare function fc:remove-top($xslt-seq) {
 };
 
 (: Transform the input using a sequence of XSLTs :)
-declare function fc:transform($doc as node(),$xslt-seq as item()*) as item() {
+declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:boolean) as item() {
     let $out := transform:transform($doc,$xslt-seq[1],())
+    let $debug := if ($debug = true())
+                  then (xmldb:store('/db/test',
+                                     concat(tokenize(base-uri($xslt-seq[1]),'/')[last()],'.xml'),
+                                     $out))
+                  else ()
     let $tr := subsequence($xslt-seq,2,count($xslt-seq))
-    return if (empty($tr) = false()) then (fc:transform($out,$tr)) else ($out)
+    return (if (empty($tr) = false()) then (fc:transform($out,$tr,true())) else ($out))
     
+};
+
+(: Debug output :)
+declare function fc:save-debug($debug-uri,$xslt) {
+    <debug>
+        <uri>{$debug-uri}</uri>
+        <xslt>{base-uri($xslt)}</xslt>
+    </debug>
 };
