@@ -154,13 +154,13 @@
     <!-- Convert -->
     <sg:validate-convert name="convert" cx:depends-on="extract-archive">
         <p:input port="manifest">
-            <p:pipe port="manifest" step="docx2xml"/>
+            <p:pipe port="manifest" step="xlsx2xml"/>
         </p:input>
         <p:input port="parameters">
-            <p:pipe port="parameters" step="docx2xml"/>
+            <p:pipe port="parameters" step="xlsx2xml"/>
         </p:input>
         <p:input port="sch">
-            <p:pipe port="sch" step="docx2xml"/>
+            <p:pipe port="sch" step="xlsx2xml"/>
         </p:input>
         <p:with-option name="input-base-uri" select="concat($tmp-dir,'/xml/')"/>
         <p:with-option name="output-base-uri" select="concat($output-base-uri,'/')"/>
