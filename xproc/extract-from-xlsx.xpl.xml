@@ -108,7 +108,7 @@
                 <!--<cx:message>
                     <p:with-option name="message" select="concat('Reading xlsx archive ', $current-file)"/>
                 </cx:message>-->
-                <p:identity></p:identity>
+                <p:identity message="{concat('Reading xlsx archive ', $current-file)}"></p:identity>
             </p:when>
             <p:otherwise>
                 <p:identity/>
@@ -144,9 +144,9 @@
             </p:catch>
         </p:try>
         
-        <p:identity name="sheets-output"/>
+        <!--<p:identity name="sheets-output"/>
         
-        <!-- Extract and insert shared strings -->
+        <!-\- Extract and insert shared strings -\->
         <p:try>
             <p:group>
                 <p:unarchive name="shared-strings">
@@ -166,11 +166,11 @@
             <p:catch>
                 <p:identity/>
             </p:catch>
-        </p:try>
+        </p:try>-->
         
-        <p:identity name="sheets-shared-strings"/>
+        <!--<p:identity name="sheets-shared-strings"/>
         
-        <!-- Extract and insert the spreadsheet relations, if they exist -->
+        <!-\- Extract and insert the spreadsheet relations, if they exist -\->
         <p:try>
             <p:group>
                 <p:unarchive name="spreadsheet-relations">
@@ -190,7 +190,7 @@
             <p:catch>
                 <p:identity/>
             </p:catch>
-        </p:try>
+        </p:try>-->
         
         <p:identity/>
         
