@@ -5,7 +5,7 @@ declare namespace data = "http://www.corbas.co.uk/ns/transforms/data";
 import module namespace transform = "http://exist-db.org/xquery/transform";
 
 (: Load XSLT stylesheets from a manifest :)
-declare function fc:load-manifest($uri) as item()* {
+declare function fc:load-manifest($uri as xs:anyURI) as item()* {
     let $manifest := doc($uri)
     let $doc := tokenize(base-uri($manifest),'/')[last()]
     let $base-uri := substring-before(base-uri($manifest),$doc)
@@ -37,10 +37,3 @@ declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:b
     
 };
 
-(: Debug output :)
-declare function fc:save-debug($debug-uri,$xslt) {
-    <debug>
-        <uri>{$debug-uri}</uri>
-        <xslt>{base-uri($xslt)}</xslt>
-    </debug>
-};
