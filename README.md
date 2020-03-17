@@ -1,16 +1,22 @@
 # README
 
-This contains XProc and XSLT scripts to convert XML to XML in batch. It is based on Nic Gibson's XProc Tools (inluded here for convenience) and previous work by yours truly.
+This repository contains XProc and XSLT scripts to run an XSLT-based pipeline converting XML to XML in batch. It is based on Nic Gibson's XProc Tools (inluded here for convenience) and previous work by yours truly.
 
-In addition to the tools here, you'll need a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
+There is also an XQuery module and a test XQuery calling the functions in the module, both intended to run in eXist-DB. These, just like the XProc scripts, are intended to run an XSLT pipeline.
+
+In addition to the tools, you'll need a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
+
+An example pipeline, complete with a manifest and XSLT stylesheets, is available at (https://github.com/sgmlguru/xslt-pipelines). It should explain how to create your own XSLT pipeline.
 
 
 ## Requirements
 
-At the moment, you'll need a recent version of XML Calabash 1.x.x. Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
+At the moment, you'll need one of the following: 
+* A recent version of XML Calabash 1.x.x. Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
+* An eXist-DB XML database, version 5.2 or later.
 
 
-## Running
+## Running via XProc
 
 Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course.
 
@@ -151,3 +157,51 @@ total 106M
 Each file is named after the XSLT that produces it, plus a prefixed ordinal number, except for the very first file, `0-...`. This is a copy of the source file, placed here to enable XSpec testing functionality.
 
 Thus, debugging the pipeline is as easy as determining where the problem is and then running that stylesheet on the previous step's output in an XML editor such as oXygen.
+
+
+## Running via eXist-DB
+
+Upload your XSLT pipeline folder to eXist. For example, the example pipeline in (https://github.com/sgmlguru/xslt-pipelines) has the following structure:
+
+```
+xslt-pipeline/
+  pipelines/
+    test-manifest.xml
+  xslt/
+    step1.xsl
+    step2.xsl
+    step3.xsl
+    step4.xsl
+```
+
+Keep the entire structure as-is and upload everything to an eXist collection.
+
+Then, add a collection for your scripts and copy the XQuery module and test script as follows:
+
+```
+./
+  modules/
+    fc-functions.xqm
+  test.xquery
+```
+
+Finally, update `test.xquery` to use the collections in your eXist-DB installation.
+
+Note that `test.xquery` will only handle a single input file at a time. The relevant lines look like this:
+
+```
+xquery version "3.1";
+
+import module namespace fc = "http://www.sgmlguru.org/ns/fc" at "modules/fc-functions.xqm";
+
+let $source := '/db/test/sources/input.xml'
+let $manifest-uri := '/db/repos/xslt-pipeline/pipelines/test-manifest.xml'
+let $xslt-seq := fc:load-manifest($manifest-uri)
+let $debug := true()
+
+return fc:transform(doc($source),$xslt-seq,$debug)
+```
+
+Here, `fc:transform(doc($source),$xslt-seq,$debug)` runs the XSLT pipeline as defined by the manifest `/db/repos/xslt-pipeline/pipelines/test-manifest.xml`. If you've kept the test pipeline structure intact, you'll only need to edit `$source` and `$manifest-uri`, above.
+
+**Note that running XSpec tests in XQuery is not supported yet!**
