@@ -25,8 +25,7 @@ total 16K
     
     
     <xsl:param
-        name="tmp-folder"
-        select="'/home/ari/Documents/projects/rosetta/docx2db/test/tmp'"/>
+        name="tmp-folder"/>
     
     <xsl:variable
         name="tmp-file-list"
@@ -46,8 +45,7 @@ total 16K
     
     <!-- Input XSpec manifest URI; may be a relative path -->
     <xsl:param
-        name="xspec-manifest-uri"
-        select="'file:/home/ari/Documents/repos/docx2db/tests/docx2xml-xspec-manifest.xml'"/>
+        name="xspec-manifest-uri"/>
     
     <!-- Manifest -->
     <xsl:variable

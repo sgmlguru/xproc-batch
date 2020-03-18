@@ -34,6 +34,8 @@ XProc library step for saving debug output in XSLT manifest conversions.
 
 XProc pipeline for converting and validating a batch of XML documents.
 
+**NOTE! The validation of *input* documents is currently not supported. Thus, these options should not be enabled.**
+
 
 ## validate-input.xpl
 

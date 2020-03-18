@@ -1,6 +1,6 @@
 # XSpec-in-Pipeline Functionality
 
-This describes the XSpec functionality intended to be run after the XSLT pipeline(s).
+This describes the XSpec functionality that is meant to run after an XSLT pipeline.
 
 
 ## Basics
@@ -73,7 +73,7 @@ Here, the temp file `1-step1.xsl.xml` is the output from the first XSLT, `step1.
 
 **NOTE! `0-step1.xsl.xml` is a copy of the unchanged input file, copied to the temp folder by the conversion pipeline when generating and running the XSpec tests.**
 
-We can't apply XSpec tests directly on the inputs and outputs of a pipeline, of course, since XSpecs act on a single XSLT, not a series of them. Neither can we apply an XSpec test on a batch of input and output files since XSpecs act on a single file at a time. 
+We can't apply XSpec tests directly on the inputs and outputs of a pipeline, of course, since XSpecs act on a single XSLT, not a sequence of them. Neither can we apply an XSpec test on a batch of input and output files since XSpecs act on a single file at a time. 
 
 This means that we need to create one XSpec test per transformation. An XSpec `step1.xspec`, for example, might test the first transformation step. It will only act on a single input and output at a time. For example:
 
@@ -88,11 +88,11 @@ This means that we need to create one XSpec test per transformation. An XSpec `s
 </x:scenario>
 ```
 
-Note `x:context/@href`. Similarly, there might be an `x:expect/@href`.
+Note the presence of `x:context/@href`. Similarly, there might be an `x:expect/@href`.
 
-When transformming a batch of files, then, there needs to be a test for each file and XSLT step.
+Thus, when transformming a batch of files, there needs to be a test for each file and XSLT step.
 
-Not every step will necessarily require XSpec tests, so a manifest file, similar to the XSLT manifest, above, could be used to list those steps that do need one. For example:
+Not every step will require XSpec tests, so a manifest file, similar to the XSLT manifest, above, could be used to list those steps that do need one. For example:
 
 
 ```XML
@@ -169,7 +169,7 @@ The XProc pipeline in `xproc/run-xspecs.xpl` generates the instance XSpecs based
 
 The `xspec-manifest-uri` and `tmp-folder-uri` options are fairly self-explanatory. The `run-xspecs` option enables or disables generating and running the XSpec tests, with the possible values 'true' and 'false' (default).
 
-The input ports are static, defined in the pipeline itself, and not shown here. They point out the XSLTs required to generate instance XSpecs, convert the XSpecs to XSLTs, and convert the resulting XML test reports to HTML, respectively.
+The input ports are static, defined by the pipeline itself, and not shown here. They point out the XSLTs required to generate instance XSpecs, convert the XSpecs to XSLTs, and convert the resulting XML test reports to HTML, respectively.
 
 
 ### What the Pipeline Does
@@ -177,30 +177,23 @@ The input ports are static, defined in the pipeline itself, and not shown here. 
 The XProc pipeline runs the following:
 
 * `xslt/generate-instance-xspecs.xsl` (generates instance XSpecs)
-* `../../xml-toolbox/vendor/xspec/src/compiler/generate-xspec-tests.xsl` (generates XSLT from XSpec; part of the XSpec distribution)
-* `../../xml-toolbox/vendor/xspec/src/reporter/format-xspec-report.xsl` (converts the XSpec report XML to HTML; part of the XSpec distribution)
+* `../xspec/src/compiler/generate-xspec-tests.xsl` (generates XSLT from XSpec; part of the XSpec distribution)
+* `../xspec/src/reporter/format-xspec-report.xsl` (converts the XSpec report XML to HTML; part of the XSpec distribution)
 * Saves the XHTML reports in a subfolder `xspec-tests` to the temp folder where the intermediate XML is stored (so next to the folders per input file)
 
 
 ### Testing the Pipeline
 
-There is a shell script `merge-nj-content-pilot/xproc-stuff/xspec-tools/xproc/run-xspecs.sh` that runs the `run-xspecs.xpl` pipeline only, without any preceding conversion of any kind. The test material used is in `merge-nj-content-pilot/xproc-stuff/xspec-test-content/201805300944/debug` and is simply the debug output from a conversion of a few test files.
+There is a shell script `xproc/run-xspecs.sh` that runs the `run-xspecs.xpl` pipeline, without any preceding conversion of any kind. Currently you'll have to provide an example pipeline and update any paths inside the shell script.
 
 If you wish to run the `run-xspecs.xpl` pipeline on some other debug material, you **need to change `tmp-folder-uri` accordingly in the shell script**.
 
 
-### Using Ant
+### Using `validate-convert.sh` or Other Wrapper Scripts
 
-If you wish to run XSpec tests in context, you can use the Ant script. For this to work, you'll need to:
+You can also run the conversion wrapper pipeline, `validate-convert.xpl`, by using the shell script `validate-convert.sh`.
 
-* Set `${run-xspecs}="true"` in your local properties (this is set to 'false' by default)
-* Point out the XSpec manifest file in `${xspec.manifest}` (or use the default in `build.properties.xml`)
-* Make sure to set `${debug}="true"` in your local properties (which is also the default)
-
-
-### Using `validate-convert.sh`
-
-You can also run the conversion wrapper pipeline, `validate-convert.xpl`, by using the shell script `validate-convert.sh`. 
+The `xlsx2xml.xpl` pipeline is a wrapper to the wrapper - it runs `validate-convert.xpl` as its second main part, the first being extracting XML from an Excel archive.
 
 
 ## Writing XSpecs

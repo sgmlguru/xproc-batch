@@ -20,7 +20,7 @@
 
 
     <!-- Input path -->
-    <p:option name="input-base-uri" select="'file:/home/ari/Documents/projects/docx2db/test/sources'">
+    <p:option name="input-base-uri">
         <p:documentation>
             <p>Source document(s) URI. Every document ending with suffix <em>$include-filter</em> in this folder and its subfolders is transformed.</p>
         </p:documentation>
@@ -40,7 +40,7 @@
     </p:option>
 
     <!-- Output base URI -->
-    <p:option name="output-base-uri" select="'file:/home/ari/Documents/projects/docx2db/test/tmp/xml'">
+    <p:option name="output-base-uri">
         <p:documentation>
             <p>Output base URI for the transformed files, debug, etc. Output folders for these are defined alsewhere.</p>
         </p:documentation>
