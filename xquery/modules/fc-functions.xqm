@@ -28,13 +28,6 @@ declare function fc:load-manifest($uri as xs:anyURI) as item()* {
 };
 
 
-(: Just for investigative purposes :)
-declare function fc:remove-top($xslt-seq) {
-    let $tr := subsequence($xslt-seq,2,count($xslt-seq))
-    return if (empty($tr) = false()) then ($xslt-seq,fc:remove-top($tr)) else ($xslt-seq)
-    
-};
-
 (: Transform the input using a sequence of XSLTs :)
 declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:boolean) as item() {
     let $out := transform:transform($doc,$xslt-seq[1],$xslt-seq[2])

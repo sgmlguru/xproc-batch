@@ -2,7 +2,7 @@
 
 This contains a number of XProc scripts to convert stuff in batch from one XML format to another. There are also XProc library steps to extract info from Word and Excel zip archives, and to validate XML.
 
-The XProc relies on Nic Gibson's XProc Tools to do the conversions.
+The XProc relies on [Nic Gibson's XProc Tools](https://github.com/Corbas/xproc-tools) to do the conversions.
 
 
 ## batch-convert.xpl

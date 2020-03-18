@@ -10,9 +10,6 @@ let $xslt-seq := fc:load-manifest($manifest-uri)
 
 let $debug := true()
 
-(: Investigates removing the topmost XSLT from the sequence of loaded XSLT stylesheets :)
-let $remove-top := <root>{fc:remove-top($xslt-seq)}</root>
-
 return fc:transform(doc($source),$xslt-seq,$debug)
 
 (:return $xslt-seq:)
