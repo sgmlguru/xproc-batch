@@ -12,15 +12,15 @@ An example pipeline, complete with a manifest and XSLT stylesheets, is available
 ## Requirements
 
 At the moment, you'll need one of the following: 
-* A recent version of XML Calabash 1.x.x. Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
-* An eXist-DB XML database, version 5.2 or later.
+* A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
+* An [eXist-DB XML database](http://exist-db.org/exist/apps/homepage/index.html), version 5.2 or later.
 
 
-## Running via XProc
+## Running Pipelines via XProc
 
 Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course.
 
-For example, let's assume that this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets lives at `/home/ari/Documents/repos/xlsx2xml`. Furthermore, there is a project folder on the local PC containing the actual sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
+For example, let's assume that this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets lives at `/home/ari/Documents/repos/xlsx2xml`. Furthermore, let's assume that there is a project folder on the local file system containing the actual sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
 
 Furthermore, we'll assume that XML Calabash is unpacked to `/home/ari/xmlcalabash-1.1.30-99/`.
 
@@ -62,7 +62,7 @@ echo Converting XLSX sources to XML...
 * `debug=true` produces debug output for each XSLT step in the manifest.
 * `/home/ari/Documents/repos/xproc-batch/xproc/xlsx2xml.xpl` is the actual XProc pipeline being run.
 
-You might also want the output to validate against a DTD. Adding `doctype-public` or `doctype-system` (or both) will add a `DOCTYPE` declaration to the output. These are serialisation options set in the XProc script.
+You might also want the output to validate against a DTD. Adding `doctype-public` or `doctype-system` (or both) to the shell script will add a `DOCTYPE` declaration to the output. These are serialisation options set in the XProc script.
 
 Given the above, the XProc script will, when run, add an output structure like so:
 
@@ -127,7 +127,7 @@ For example, let's assume that our source file is `/home/ari/Documents/projects/
 </manifest>
 ```
 
-The pipeline will produce debug output in `/home/ari/Documents/projects/findcourses/poc/tmp/debug/Activate_Learning.xml/`:
+The pipeline will produce debug output in `/home/ari/Documents/projects/findcourses/poc/tmp/debug/Activate_Learning.xml/` as follows:
 
 ```
 ari@toddao:~/Documents/projects/findcourses/poc/tmp/debug/Activate_Learning.xml$ ls -lh
@@ -154,19 +154,23 @@ total 106M
 -rw-r--r-- 1 ari ari 4,4M mar  5 16:16 19-EXC2XI_xi-cleanup.xsl.xml
 ```
 
-Each file is named after the XSLT that produces it, plus a prefixed ordinal number, except for the very first file, `0-...`. This is a copy of the source file, placed here to enable XSpec testing functionality.
+Each file is named after the XSLT that produces it, plus a prefixed ordinal number, except for the very first file, `0-...`. This is a copy of the source file, copied to the debug folder to enable XSpec testing functionality.
 
-Thus, debugging the pipeline is as easy as determining where the problem is and then running that stylesheet on the previous step's output in an XML editor such as oXygen.
+Thus, debugging the pipeline is as easy as determining where the problem is by studying the step outputs and then running the corresponding stylesheet on the previous step's output in an XML editor such as oXygen.
 
 
-## Running via eXist-DB
+## Running Pipelines via eXist-DB
 
-Upload your XSLT pipeline folder to eXist. For example, the example pipeline in (https://github.com/sgmlguru/xslt-pipelines) has the following structure:
+If XProc is not the solution you're looking for, for some strange reason, you can also run an XSLT pipeline from XQuery in eXist-DB.
+
+First, upload your XSLT pipeline folder to eXist. You might want to ease into this by using an [example pipeline](https://github.com/sgmlguru/xslt-pipelines) I've made up, including an input test file, the XSLT manifest, and the actual XSLT stylesheets. This repo has the following structure:
 
 ```
-xslt-pipeline/
+xslt-pipelines/
   pipelines/
     test-manifest.xml
+  sources/
+    input.xml  
   xslt/
     step1.xsl
     step2.xsl
@@ -174,9 +178,9 @@ xslt-pipeline/
     step4.xsl
 ```
 
-Keep the entire structure as-is and upload everything to an eXist collection.
+Keep the entire structure as-is and upload everything to a suitable eXist collection.
 
-Then, add a collection for your scripts and copy the XQuery module and test script as follows:
+Then, add a collection for your scripts and copy the XQuery module and test script to it as follows:
 
 ```
 ./
@@ -187,7 +191,7 @@ Then, add a collection for your scripts and copy the XQuery module and test scri
 
 Finally, update `test.xquery` to use the collections in your eXist-DB installation.
 
-Note that `test.xquery` will only handle a single input file at a time. The relevant lines look like this:
+Note that `test.xquery` will only handle a single input file at a time. The script looks like this:
 
 ```
 xquery version "3.1";
