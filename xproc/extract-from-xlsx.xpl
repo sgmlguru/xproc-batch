@@ -118,6 +118,13 @@
             </p:otherwise>
         </p:choose>
         
+        <!-- We'll need the following at least:
+             xl/workbook.xml 
+             xl/worksheets/sheet1.xml
+             xl/sharedStrings.xml
+             xl/worksheets/_rels/sheet1.xml.rels
+             -->
+        
         <!-- Extract the main document -->
         <pxp:unzip name="doc">
             <p:with-option name="href" select="$current-file"/>
