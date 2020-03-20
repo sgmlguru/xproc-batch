@@ -7,4 +7,7 @@ let $manifest-uri := '/db/repos/xslt-pipeline/pipelines/test-manifest.xml'
 let $xslt-seq := pipelines:load-manifest($manifest-uri)
 let $debug := true()
 
+let $out-base := '/db/test'
+let $create-collections := pipelines:create-target-collections($out-base,false())
+
 return pipelines:transform(doc($source),$xslt-seq,$debug)

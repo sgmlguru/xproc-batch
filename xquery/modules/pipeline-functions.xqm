@@ -47,6 +47,7 @@ declare function pipelines:create-target-collections($uri as xs:anyURI,$debug as
     let $base := if (xmldb:collection-available(concat($uri,'/',$date-time))) then () else (xmldb:create-collection($uri,$date-time))
     let $tmp := if (xmldb:collection-available(concat($base,'/tmp'))) then () else (xmldb:create-collection($base,'tmp'))
     let $xml := if (xmldb:collection-available(concat($tmp,'/xml'))) then () else (xmldb:create-collection($tmp,'xml'))
+    let $debug-uri := if (xmldb:collection-available(concat($tmp,'/debug')) or $debug = false()) then () else (xmldb:create-collection($tmp,'debug'))
     let $out := if (xmldb:collection-available(concat($tmp,'/out'))) then () else (xmldb:create-collection($tmp,'out'))
     return xs:anyURI($tmp)
 };
