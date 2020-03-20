@@ -31,12 +31,12 @@ declare function pipelines:load-manifest($uri as xs:anyURI) as item()* {
 (: Transform the input using a sequence of XSLTs :)
 declare function pipelines:transform($doc as node(),$xslt-seq as item()*,$debug as xs:boolean) as item() {
     let $out := transform:transform($doc,$xslt-seq[1],$xslt-seq[2])
-    let $debug := if ($debug = true())
-                  then (xmldb:store('/db/test',
-                                     concat(tokenize(base-uri($xslt-seq[1]),'/')[last()],'.xml'),
-                                     $out))
-                  else ()
+    let $save-debug := if ($debug = true())
+                       then (xmldb:store('/db/test',
+                             concat(tokenize(base-uri($xslt-seq[1]),'/')[last()],'.xml'),
+                             $out))
+                       else ()
     let $tr := subsequence($xslt-seq,3,count($xslt-seq))
-    return (if (empty($tr) = false()) then (pipelines:transform($out,$tr,true())) else ($out))
+    return (if (empty($tr) = false()) then (pipelines:transform($out,$tr,$debug)) else ($out))
 };
 
