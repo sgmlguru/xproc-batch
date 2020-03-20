@@ -8,9 +8,11 @@ let $xslt-seq := pipelines:load-manifest($manifest-uri)
 let $debug := true()
 
 let $out-base := '/db/test'
-let $create-collections := pipelines:create-target-collections($out-base,false())
+let $create-collections := pipelines:create-target-collections($out-base,$debug)
 
-return pipelines:transform(doc($source),$xslt-seq,$debug,$create-collections)
+let $filename := tokenize($source,'/')[last()]
+
+return pipelines:transform($filename,doc($source),$xslt-seq,$debug,$create-collections)
 
 
 (:return $create-collections:)
