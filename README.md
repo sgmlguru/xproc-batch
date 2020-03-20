@@ -196,16 +196,15 @@ Note that `test.xquery` will only handle a single input file at a time. The scri
 ```
 xquery version "3.1";
 
-import module namespace fc = "http://www.sgmlguru.org/ns/fc" at "modules/fc-functions.xqm";
-
+import module namespace pipelines = "http://www.sgmlguru.org/ns/pipelines" at "modules/pipeline-functions.xqm";
 let $source := '/db/test/sources/input.xml'
 let $manifest-uri := '/db/repos/xslt-pipeline/pipelines/test-manifest.xml'
-let $xslt-seq := fc:load-manifest($manifest-uri)
+let $xslt-seq := pipelines:load-manifest($manifest-uri)
 let $debug := true()
 
-return fc:transform(doc($source),$xslt-seq,$debug)
+return pipelines:transform(doc($source),$xslt-seq,$debug)
 ```
 
-Here, `fc:transform(doc($source),$xslt-seq,$debug)` runs the XSLT pipeline as defined by the manifest `/db/repos/xslt-pipeline/pipelines/test-manifest.xml`. If you've kept the test pipeline structure intact, you'll only need to edit `$source` and `$manifest-uri`, above.
+Here, `pipelines:transform(doc($source),$xslt-seq,$debug)` runs the XSLT pipeline as defined by the manifest `/db/repos/xslt-pipeline/pipelines/test-manifest.xml`. If you've kept the test pipeline structure intact, you'll only need to edit `$source` and `$manifest-uri`, above.
 
 **Note that running XSpec tests in XQuery is not supported yet!**

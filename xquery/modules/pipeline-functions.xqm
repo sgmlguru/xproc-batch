@@ -1,13 +1,13 @@
 xquery version "3.1";
 
-module namespace fc = "http://www.sgmlguru.org/ns/fc";
+module namespace pipelines = "http://www.sgmlguru.org/ns/pipelines";
 declare namespace data = "http://www.corbas.co.uk/ns/transforms/data";
 import module namespace util = "http://exist-db.org/xquery/util";
 import module namespace transform = "http://exist-db.org/xquery/transform";
 
 
 (: Load XSLT stylesheets and params from a manifest :)
-declare function fc:load-manifest($uri as xs:anyURI) as item()* {
+declare function pipelines:load-manifest($uri as xs:anyURI) as item()* {
     let $manifest := doc($uri)
     let $doc := tokenize(base-uri($manifest),'/')[last()]
     let $base-uri := substring-before(base-uri($manifest),$doc)
@@ -29,7 +29,7 @@ declare function fc:load-manifest($uri as xs:anyURI) as item()* {
 
 
 (: Transform the input using a sequence of XSLTs :)
-declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:boolean) as item() {
+declare function pipelines:transform($doc as node(),$xslt-seq as item()*,$debug as xs:boolean) as item() {
     let $out := transform:transform($doc,$xslt-seq[1],$xslt-seq[2])
     let $debug := if ($debug = true())
                   then (xmldb:store('/db/test',
@@ -37,6 +37,6 @@ declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:b
                                      $out))
                   else ()
     let $tr := subsequence($xslt-seq,3,count($xslt-seq))
-    return (if (empty($tr) = false()) then (fc:transform($out,$tr,true())) else ($out))
+    return (if (empty($tr) = false()) then (pipelines:transform($out,$tr,true())) else ($out))
 };
 
