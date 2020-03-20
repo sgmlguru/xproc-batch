@@ -10,4 +10,7 @@ let $debug := true()
 let $out-base := '/db/test'
 let $create-collections := pipelines:create-target-collections($out-base,false())
 
-return pipelines:transform(doc($source),$xslt-seq,$debug)
+return pipelines:transform(doc($source),$xslt-seq,$debug,$create-collections)
+
+
+(:return $create-collections:)
