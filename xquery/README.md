@@ -32,4 +32,9 @@ Module namespace "http://www.sgmlguru.org/ns/sgf".
 
 #### `sgf:xlsx-unzip($zip as xs:anyURI,$out-path as xs:anyURI) as node()`
 
-Unzips parts of an Excel archive located at `$zip` to an output collection `$out-path`.
+Unzips (parts of) an Excel archive located at `$zip` to an output collection `$out-path`. Wraps the sequence of nodes in a `wrap` element.
+
+
+#### `sgf:xlsx-unzip-collection($sources,$out) as xs:string*`
+
+Unzips a collection of XLSX files in `$sources` using `sgf:xlsx-unzip()` and places the results in `$out`.
