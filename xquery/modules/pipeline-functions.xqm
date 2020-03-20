@@ -54,7 +54,19 @@ declare function pipelines:save-debug($uri as xs:anyURI,$filename as xs:string,$
 };
 
 
+(: Run transform in batch on an input collection :)
+declare function pipelines:transform-collection($sources as xs:anyURI,$pipeline as xs:anyURI,$debug as xs:boolean,$base-uri as xs:anyURI) {
+    let $xslt-sequence := pipelines:load-manifest($pipeline)
+    let $tmp-uri := pipelines:create-target-collections($base-uri,$debug)
+    let $batch := for $doc in collection($sources)/*
+                    let $filename := tokenize(base-uri($doc),'/')[last()]
+                    return pipelines:transform($filename,$doc,$xslt-sequence,$debug,$tmp-uri)
+    return $batch
+};
+
+
 (: Create target collections for pipeline output - everything should be created in a timeDate collection :)
+(: Returns URI to the dateTime temp location :)
 declare function pipelines:create-target-collections($uri as xs:anyURI,$debug as xs:boolean) as xs:anyURI {
     let $date-time := translate(substring-before(string(fn:current-dateTime()),'.'),':-T','')
     let $base := if (xmldb:collection-available(concat($uri,'/tmp'))) then (concat($uri,'/tmp')) else (xmldb:create-collection($uri,'tmp'))
