@@ -40,3 +40,13 @@ declare function pipelines:transform($doc as node(),$xslt-seq as item()*,$debug 
     return (if (empty($tr) = false()) then (pipelines:transform($out,$tr,$debug)) else ($out))
 };
 
+
+(: Create target collections for pipeline output - everything should be created in a timeDate collection :)
+declare function pipelines:create-target-collections($uri as xs:anyURI,$debug as xs:boolean) as xs:anyURI {
+    let $date-time := translate(substring-before(string(fn:current-dateTime()),'.'),':-T','')
+    let $base := if (xmldb:collection-available(concat($uri,'/',$date-time))) then () else (xmldb:create-collection($uri,$date-time))
+    let $tmp := if (xmldb:collection-available(concat($base,'/tmp'))) then () else (xmldb:create-collection($base,'tmp'))
+    let $xml := if (xmldb:collection-available(concat($tmp,'/xml'))) then () else (xmldb:create-collection($tmp,'xml'))
+    let $out := if (xmldb:collection-available(concat($tmp,'/out'))) then () else (xmldb:create-collection($tmp,'out'))
+    return xs:anyURI($tmp)
+};
