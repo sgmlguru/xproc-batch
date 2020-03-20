@@ -38,6 +38,5 @@ declare function fc:transform($doc as node(),$xslt-seq as item()*,$debug as xs:b
                   else ()
     let $tr := subsequence($xslt-seq,3,count($xslt-seq))
     return (if (empty($tr) = false()) then (fc:transform($out,$tr,true())) else ($out))
-    
 };
 
