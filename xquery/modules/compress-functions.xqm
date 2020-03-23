@@ -19,7 +19,7 @@ declare function sgf:process($path as xs:string,$type as xs:string, $data as ite
 
 
 (: Extract parts of an Excel archive :)
-declare function sgf:xlsx-unzip($zip as xs:anyURI,$out-path as xs:anyURI) as node() {
+declare function sgf:xlsx-unzip($zip as xs:string,$out-path as xs:string) as xs:string {
     let $filter := util:function(QName("http://www.sgmlguru.org/ns/sgf","sgf:filter"),3)
     let $process := util:function(QName("http://www.sgmlguru.org/ns/sgf","sgf:process"),4)
     let $unzip := compression:unzip(util:binary-doc($zip),$filter,(),$process,())   (: <param collection="/db/test/out"/> :)
@@ -27,5 +27,11 @@ declare function sgf:xlsx-unzip($zip as xs:anyURI,$out-path as xs:anyURI) as nod
         xmldb:store($out-path,
                     concat(substring-before(tokenize($zip,'/')[last()],'.xlsx'),'.xml'),
                     <wrap>{$unzip}</wrap>)
+};
+
+
+declare function sgf:xlsx-unzip-collection($sources,$out) as xs:string* {
+    let $batch := for $zip in collection($sources) return sgf:xlsx-unzip(base-uri($zip),concat($out,'/xml'))
+    return $batch
 };
 
