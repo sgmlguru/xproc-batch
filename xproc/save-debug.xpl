@@ -112,7 +112,7 @@
             </p:otherwise>
         </p:choose>
         
-        <p:store>
+        <p:store indent="false">
             <p:input port="source" select="/*:out/*[2]">
                 <p:pipe port="current" step="loop-debug"/>
             </p:input>
