@@ -8,6 +8,7 @@
     xmlns:sg="http://www.sgmlguru/ns/xproc/steps"
     xmlns:fc="http://educations.com/XmlImport"
     xmlns:ccproc="http://www.corbas.co.uk/ns/xproc/steps"
+    xmlns:pxf="http://exproc.org/proposed/steps/file"
     version="1.0">
 
     <!-- XSLTs -->
@@ -87,6 +88,19 @@
 
     <!-- Step for saving debug output -->
     <p:import href="save-debug.xpl"/>
+    
+    
+    <!-- Create output dir -->
+    <pxf:mkdir name="mkdir">
+        <p:with-option name="href" select="$output-base-uri"/>
+    </pxf:mkdir>
+    
+    <!-- Get rid of the mkdir output -->
+    <p:sink>
+        <p:input port="source">
+            <p:pipe port="result" step="mkdir"/>
+        </p:input>
+    </p:sink>
 
 
     <!-- Input documents list -->
