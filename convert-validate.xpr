@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="22.0">
+<project>
     <meta>
         <filters directoryPatterns="" filePatterns="\Qconvert-validate.xpr\E" positiveFilePatterns="" showHiddenFiles="false"/>
         <options>
-            <serialized version="22.0" xml:space="preserve">
+            <serialized xml:space="preserve">
                 <serializableOrderedMap>
                     <entry>
                         <String>scenarios</String>
@@ -2678,5 +2678,6 @@
         <folder path="../xlsx2xml/"/>
         <folder path="../xml-import/"/>
         <folder path="."/>
+        <folder path="../xslt-pipelines/"/>
     </projectTree>
 </project>
