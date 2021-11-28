@@ -48,6 +48,9 @@
     <!-- Enable disable verbose output -->
     <p:option name="verbose"/>
     
+    <!-- Calabash extensions -->
+    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    
     
     <!-- XSLT step names from manifest, needed for relevant debug step names -->
     <p:for-each name="xslt-names">
