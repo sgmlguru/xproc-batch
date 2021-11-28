@@ -148,6 +148,7 @@
             <p:pipe port="parameters" step="validate-convert"/>
         </p:input>
         <p:with-option name="include-filter" select="$include-filter"/>
+        <p:with-option name="exclude-filter" select="$exclude-filter"/>
         <p:with-option name="input-base-uri" select="$input-base-uri"/>
         <p:with-option name="output-base-uri" select="$output-base-uri"/>
         <p:with-option name="tmp-dir" select="$tmp-dir"/>

@@ -43,6 +43,8 @@
             <p>The file suffix of the input files to be converted. Leaving this empty will attempt to convert everything, so don't do it unless you know what you're doing.</p>
         </p:documentation>
     </p:option>
+    
+    <p:option name="exclude-filter" select="''"/>
 
     <!-- Output base URI -->
     <p:option name="output-base-uri">
@@ -109,6 +111,7 @@
         <!-- Add @uri to c:file elements -->
         <p:with-option name="resolve" select="'true'"/>
         <p:with-option name="include-filter" select="$include-filter"/>
+        <p:with-option name="exclude-filter" select="$exclude-filter"/>
     </ccproc:recursive-directory-list>
     
     <!-- URI-encode the directory listing -->
