@@ -11,7 +11,7 @@ echo Running conversion and validation of $PROJECT...
 	    com.xmlcalabash.drivers.Main \
 	    --entity-resolver org.xmlresolver.Resolver \
 	    --input manifest=$ROOT/../xslt-pipelines/pipelines/test-manifest.xml \
-	    --input sch=$ROOT/sch/placeholder.sch \
+	    --input sch=$ROOT/../xslt-pipelines/sch/placeholder.sch \
 	    --with-param parameters@param1=foobar \
 	    --with-param parameters@param3A=123 \
 	    --with-param parameters@param3B=456 \
