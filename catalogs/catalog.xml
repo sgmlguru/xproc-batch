@@ -4,5 +4,11 @@ PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
 "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
   <public publicId="" uri=""/>
+  
+  <!-- sgmlguru namespace -->
   <rewriteURI uriStartString="http://www.sgmlguru/ns/xproc/steps/" rewritePrefix="./../xproc/"/>
+  
+  <!-- XProc Tools -->
+  <nextCatalog catalog="../xproc-tools/catalog.xml"/>
+  
 </catalog>
