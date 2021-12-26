@@ -89,7 +89,7 @@
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
 
     <!-- Step for saving debug output -->
-    <p:import href="save-debug.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/save-debug.xpl"/>
     
     
     <!-- Create output dir -->

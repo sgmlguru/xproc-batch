@@ -120,10 +120,10 @@
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
         
     <!-- Step for extracting stuff from docx -->
-    <p:import href="extract-from-docx.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/extract-from-docx.xpl"/>
     
     <!-- Step for validating and converting -->
-    <p:import href="validate-convert.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/validate-convert.xpl"/>
     
     
     <!-- Extract from the docx archive? -->

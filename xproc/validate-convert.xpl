@@ -102,13 +102,13 @@
 
     
     <!-- Import batch convert step -->
-    <p:import href="batch-convert.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/batch-convert.xpl"/>
 
     <!-- Import DTD validation step -->
-    <p:import href="validate-input.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/validate-input.xpl"/>
 
     <!-- Import Schematron validation step -->
-    <p:import href="validate-with-schematron.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/validate-with-schematron.xpl"/>
 
     <!-- Import XSpec tests step -->
     <p:import href="../xspec-tools/xproc/run-xspecs.xpl"/>
