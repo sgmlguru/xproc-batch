@@ -159,11 +159,22 @@ Each file is named after the XSLT that produces it, plus a prefixed ordinal numb
 Thus, debugging the pipeline is as easy as determining where the problem is by studying the step outputs and then running the corresponding stylesheet on the previous step's output in an XML editor such as oXygen.
 
 
+## Example Pipeline
+
+I've created an [example pipeline](https://github.com/sgmlguru/xslt-pipelines) to illustrate how this all works. It's a separate repository, so go ahead and download it next to this one. If you do (download it so that repo's root folder is a sibling to the folder you're in right now), the shell script in `sh/example.sh` will illustrate a use case. In this folder, just run
+
+```
+sh sh/example.sh ../xslt-pipelines/ true true
+```
+
+This is going to clutter the `xslt-pipeline` example repository with a `tmp` folder that contains the example pipeline's output, including a `debug` folder.
+
+
 ## Running Pipelines via eXist-DB
 
-If XProc is not the solution you're looking for, for some strange reason, you can also run an XSLT pipeline from XQuery in eXist-DB.
+If XProc is not the solution you're looking for, for some strange reason, you can also run the XSLT pipeline from XQuery in eXist-DB.
 
-First, upload your XSLT pipeline folder to eXist. You might want to ease into this by using an [example pipeline](https://github.com/sgmlguru/xslt-pipelines) I've made up, including an input test file, the XSLT manifest, and the actual XSLT stylesheets. This repo has the following structure:
+First, upload your XSLT pipeline folder to eXist. You might want to ease into this by using that [example pipeline](https://github.com/sgmlguru/xslt-pipelines) I mentioned above, that includes an input test file, the XSLT manifest, and the actual XSLT stylesheets. This repo has the following structure:
 
 ```
 xslt-pipelines/
@@ -208,3 +219,5 @@ return pipelines:transform(doc($source),$xslt-seq,$debug)
 Here, `pipelines:transform(doc($source),$xslt-seq,$debug)` runs the XSLT pipeline as defined by the manifest `/db/repos/xslt-pipeline/pipelines/test-manifest.xml`. If you've kept the test pipeline structure intact, you'll only need to edit `$source` and `$manifest-uri`, above.
 
 **Note that running XSpec tests in XQuery is not supported yet!**
+
+
