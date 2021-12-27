@@ -51,6 +51,19 @@
     <!-- Run XSpecs? -->
     <p:choose name="run">
         <p:when test="$run-xspecs='true'">
+            <cx:message>
+                <p:with-option name="message" select="concat('Temp folder is ',$tmp-folder-uri)"/>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+            </cx:message>
+            
+            <cx:message>
+                <p:with-option name="message" select="concat('XSpec manifest URI is ',$xspec-manifest-uri)"/>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+            </cx:message>
             
             <!-- Generate instance XSpecs -->
             <p:xslt name="generate-xspec-instances">
