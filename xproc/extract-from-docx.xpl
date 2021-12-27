@@ -54,9 +54,9 @@
 
     
     <!-- XProc Tools -->
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/recursive-directory-list.xpl"/>
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/load-sequence-from-file.xpl"/>
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/threaded-xslt.xpl"/>
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/recursive-directory-list.xpl"/>
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/load-sequence-from-file.xpl"/>
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/threaded-xslt.xpl"/>
 
     <!-- Calabash extensions -->
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
