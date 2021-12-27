@@ -111,7 +111,7 @@
     <p:import href="http://www.sgmlguru/ns/xproc/steps/validate-with-schematron.xpl"/>
 
     <!-- Import XSpec tests step -->
-    <p:import href="../xspec-tools/xproc/run-xspecs.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc/steps/run-xspecs.xpl"/>
 
     <!-- Calabash extensions -->
     <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>

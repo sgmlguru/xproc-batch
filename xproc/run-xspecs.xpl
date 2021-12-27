@@ -12,17 +12,17 @@
     
     <!-- XSLT to generate instance XSpecs -->
     <p:input port="xspec2instance">
-        <p:document href="../xslt/generate-instance-xspecs.xsl"/>
+        <p:document href="xslt/generate-instance-xspecs.xsl"/>
     </p:input>
     
     <!-- XSLT to convert XSpec to XSLT -->
     <p:input port="xspec2xsl">
-        <p:document href="../../xspec/src/compiler/generate-xspec-tests.xsl"/>
+        <p:document href="../xspec/src/compiler/generate-xspec-tests.xsl"/>
     </p:input>
     
     <!-- XSLT to convert XSpec report to HTML -->
     <p:input port="xspec-report2html">
-        <p:document href="../../xspec/src/reporter/format-xspec-report.xsl"/>
+        <p:document href="../xspec/src/reporter/format-xspec-report.xsl"/>
     </p:input>
     
     <!-- Params -->
