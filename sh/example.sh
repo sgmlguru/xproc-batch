@@ -21,12 +21,12 @@ echo Running conversion and validation of $PROJECT...
 	    tmp-dir=$PROJECT/tmp \
 	    doctype-system= \
 	    doctype-public= \
-	    xspec-manifest-uri=$ROOT/../xslt-pipelines/tests/test-xspec-manifest.xsl \
+	    xspec-manifest-uri=$ROOT/../xslt-pipelines/tests/test-xspec-manifest.xml \
 	    verbose=$VERBOSE \
 	    debug=$DEBUG \
 	    dtd-validate-input=false \
 	    dtd-validate-output=false \
 	    sch-validate-input=false \
 	    sch-validate-output=false \
-	    run-xspecs=false \
+	    run-xspecs=true \
 	    $ROOT/xproc/validate-convert.xpl
