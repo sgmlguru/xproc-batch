@@ -6,12 +6,13 @@ There is also an XQuery module and a test XQuery calling the functions in the mo
 
 In addition to the tools, you'll need a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
 
-An example pipeline, complete with a manifest and XSLT stylesheets, is available at (https://github.com/sgmlguru/xslt-pipelines). It should explain how to create your own XSLT pipeline.
+An example pipeline, complete with a manifest and XSLT stylesheets, is available at [XSLT Pipelines](https://github.com/sgmlguru/xslt-pipelines). It should explain how to create your own XSLT pipeline.
 
 
 ## Requirements
 
 At the moment, you'll need one of the following: 
+
 * A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
 * An [eXist-DB XML database](http://exist-db.org/exist/apps/homepage/index.html), version 5.2 or later.
 
