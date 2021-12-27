@@ -1,0 +1,3 @@
+[submodule "xproc-tools"]
+	path = xproc-tools
+	url = https://github.com/nic-gibson/xproc-tools
