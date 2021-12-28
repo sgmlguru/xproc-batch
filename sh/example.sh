@@ -28,5 +28,5 @@ echo Running conversion and validation of $PROJECT...
 	    dtd-validate-output=false \
 	    sch-validate-input=false \
 	    sch-validate-output=false \
-	    run-xspecs=true \
+	    run-xspecs=false \
 	    $ROOT/xproc/validate-convert.xpl
