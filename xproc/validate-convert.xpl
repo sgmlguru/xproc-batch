@@ -160,7 +160,7 @@
 
 
     <!-- Validate the output -->
-    <sg:validate-input cx:depends-on="run-xspecs">
+    <sg:validate-input cx:depends-on="xspecs">
         <p:with-option name="input-base-uri" select="$output-base-uri"/>
         <p:with-option name="reports-dir" select="concat($reports-dir,'/target/dtd-validation')"/>
         <p:with-option name="validate" select="$dtd-validate-output"/>
@@ -170,13 +170,25 @@
 
 
     <!-- Run XSpec tests -->
-    <sg:run-xspecs name="run-xspecs" cx:depends-on="batch">
-        <p:with-option name="tmp-folder-uri" select="$tmp-dir"/>
-        <p:with-option name="xspec-manifest-uri" select="$xspec-manifest-uri"/>
-        <p:with-option name="run-xspecs" select="$run-xspecs"/>
-    </sg:run-xspecs>
-
-
+    <p:choose cx:depends-on="batch" name="xspecs">
+        <p:when test="$debug!='true' and $run-xspecs='true'">
+            <cx:message>
+                <p:with-option name="message" select="'$debug must be set to true to run XSpec tests'"/>
+                <p:input port="source">
+                    <p:empty/>
+                </p:input>
+            </cx:message>
+        </p:when>
+        <p:otherwise>
+            <sg:run-xspecs name="run-xspecs">
+                <p:with-option name="tmp-folder-uri" select="$tmp-dir"/>
+                <p:with-option name="xspec-manifest-uri" select="$xspec-manifest-uri"/>
+                <p:with-option name="run-xspecs" select="$run-xspecs"/>
+            </sg:run-xspecs>
+        </p:otherwise>
+    </p:choose>
+    
+    
     <!-- Validate output against Schematron -->
     <sg:validate-with-schematron cx:depends-on="batch">
         <p:input port="sch">
