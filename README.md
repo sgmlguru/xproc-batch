@@ -1,6 +1,6 @@
 # README
 
-This repository contains XProc and XSLT scripts to run an XSLT-based pipeline converting XML to XML in batch. It is based on, and relies on, Nic Gibson's [XProc Tools](https://github.com/nic-gibson/xproc-tools). XProc Tools is included here as a submodule.
+This repository contains XProc and XSLT scripts to run an XSLT-based pipeline converting XML to XML in batch. It is based on, and relies on, Nic Gibson's [XProc Tools](https://github.com/nic-gibson/xproc-tools), included here as a submodule.
 
 There is also an XQuery module and a test XQuery calling the functions in the module, both intended to run in eXist-DB. These, just like the XProc scripts, are intended to run an XSLT pipeline.
 
