@@ -127,3 +127,7 @@ Here, `pipelines:transform(doc($source),$xslt-seq,$debug)` runs the XSLT pipelin
 **Note that running XSpec tests in XQuery is not supported yet!**
 
 
+## Developing and Debugging
+
+I go into more detail about developing and debugging XSLT pipelines in [a separate document](doc/dev-debug.md).
+
