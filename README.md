@@ -6,7 +6,9 @@ There is also an XQuery module and a test XQuery calling the functions in the mo
 
 In addition to the tools, you'll need a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
 
-An example pipeline, complete with a manifest and XSLT stylesheets, is available at [XSLT Pipelines](https://github.com/sgmlguru/xslt-pipelines). It should explain how to create your own XSLT pipeline.
+XProc Batch also allows you to run any XSpec unit tests you write for your individual XSLT stylesheets alongside the XSLT pipeline by listing them in an XSpec test manifest file similar to the XSLT manifest. The XSpec manifest format is described in `xspec-tools/rng/xspec-manifest.rnc`.
+
+An example pipeline, complete with a pipeline manifest XSLT stylesheets, a test manifest and XSpec unit test examples, is available at [XSLT Pipelines](https://github.com/sgmlguru/xslt-pipelines). It should provide hints on how to create your own XSLT pipeline.
 
 
 ## Requirements
@@ -23,7 +25,7 @@ Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or a
 
 For example, let's assume that this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets lives at `/home/ari/Documents/repos/xlsx2xml`. Furthermore, let's assume that there is a project folder on the local file system containing the actual sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
 
-Furthermore, we'll assume that XML Calabash is unpacked to `/home/ari/xmlcalabash-1.1.30-99/`.
+Also, we'll assume that XML Calabash is unpacked to `/home/ari/xmlcalabash-1.1.30-99/`.
 
 This shell script would then convert the source files (in this case, some Excel spreadsheets):
 
@@ -64,6 +66,8 @@ echo Converting XLSX sources to XML...
 * `/home/ari/Documents/repos/xproc-batch/xproc/xlsx2xml.xpl` is the actual XProc pipeline being run.
 
 You might also want the output to validate against a DTD. Adding `doctype-public` or `doctype-system` (or both) to the shell script will add a `DOCTYPE` declaration to the output. These are serialisation options set in the XProc script.
+
+Note that if you leave out the `--input sch=...` line, you don't have to include a Schematron file at all. Similarly, leaving out `xspec-manifest-uri=...` means that you don't have to include an XSpec manifest file.
 
 Given the above, the XProc script will, when run, add an output structure like so:
 
