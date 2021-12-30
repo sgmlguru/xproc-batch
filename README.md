@@ -49,7 +49,7 @@ echo Converting XLSX sources to XML...
           xspec-manifest-uri=file:/path/to/xspec-manifest.xml \
           verbose=true debug=true \
           dtd-validate-input=false dtd-validate-output=false \
-          sch-validate-input=false sch-validate-output=false \
+          sch-validate-output=false \
           run-xspecs=false extract-xlsx=true \
           /home/ari/Documents/repos/xproc-batch/xproc/xlsx2xml.xpl
 

@@ -88,9 +88,6 @@
     <!-- Enable output DTD validation -->
     <p:option name="dtd-validate-output" select="'false'"/>
 
-    <!-- Enable input SCH validation -->
-    <p:option name="sch-validate-input" select="'false'"/>
-
     <!-- Enable output SCH validation -->
     <p:option name="sch-validate-output" select="'false'"/>
 
@@ -123,18 +120,6 @@
         <p:with-option name="reports-dir" select="concat($reports-dir,'/sources/dtd-validation')"/>
         <p:with-option name="validate" select="$dtd-validate-input"/>
     </sg:validate-input>
-
-    <p:sink/>
-
-    <!-- Validate input against Schematron -->
-    <sg:validate-with-schematron cx:depends-on="batch">
-        <p:input port="sch">
-            <p:pipe port="sch" step="validate-convert"/>
-        </p:input>
-        <p:with-option name="input-base-uri" select="$input-base-uri"/>
-        <p:with-option name="reports-dir" select="concat($reports-dir,'/sources/sch-validation')"/>
-        <p:with-option name="validate" select="$sch-validate-input"/>
-    </sg:validate-with-schematron>
 
     <p:sink/>
 
