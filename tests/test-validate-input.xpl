@@ -16,7 +16,7 @@
     
     
     <sgproc:validate-input>
-        <p:with-option name="input-base-uri" select="'file:/home/ari/Documents/repos/xproc-batch/tests/01/'"/>
+        <p:with-option name="input-base-uri" select="resolve-uri('./01/')"/>
         <p:with-option name="validate" select="'true'"/>
     </sgproc:validate-input>
     
