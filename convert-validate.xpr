@@ -6,6 +6,17 @@
             <serialized xml:space="preserve">
                 <serializableOrderedMap>
                     <entry>
+                        <String>additional.frameworks.directories</String>
+                        <String-array>
+                            <String>${pd}</String>
+                            <String>/home/ari/Documents/repos/xproc-batch/xproc3-framework</String>
+                        </String-array>
+                    </entry>
+                    <entry>
+                        <String>key.editor.document.type.custom.locations.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
                         <String>scenarios</String>
                         <scenario-array>
                             <scenario>
