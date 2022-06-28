@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mydoc SYSTEM "mydoc.dtd">
+<mydoc>
+    <title>Document Title</title>
+    <chapter>
+        <title>Chapter Title</title>
+        <p>A paragraph.<wrong/></p>
+    </chapter>
+</mydoc>

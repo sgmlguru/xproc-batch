@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c:errors xmlns:c="http://www.w3.org/ns/xproc-step"><c:error code="err:XD0023" href="file:/home/ari/Documents/repos/xproc-batch/xproc/validate-input.xpl" line="81" column="70" xmlns:err="http://www.w3.org/ns/xproc-error"><message>Error raised for file:/home/ari/Documents/repos/xproc-batch/tests/01/input01.xml at 7/32: Element type "wrong" must be declared.</message></c:error></c:errors>

@@ -1,0 +1,7 @@
+<!ELEMENT mydoc (title, chapter+) >
+
+<!ELEMENT chapter (title, p+) >
+
+<!ELEMENT title (#PCDATA) >
+
+<!ELEMENT p (#PCDATA) >
