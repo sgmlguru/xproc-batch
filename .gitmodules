@@ -1,4 +1,4 @@
 [submodule "xproc-tools"]
 	path = xproc-tools
-	url = https://github.com/nic-gibson/xproc-tools
-	branch = verbose-fix
+	url = https://github.com/sgmlguru/xproc-tools
+	branch = xproc3
