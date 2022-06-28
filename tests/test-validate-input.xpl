@@ -7,7 +7,7 @@
     type="sgproc:test-validate"
     version="3.0">
     
-    <p:documentation>Validate files in an input directory</p:documentation>
+    <p:documentation>Validate files in an input directory. One fails, one succeedes.</p:documentation>
     
     
     <p:import href="../xproc/validate-input.xpl"/>
