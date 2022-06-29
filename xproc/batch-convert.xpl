@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step
-    type="sg:batch-convert"
+    type="sgproc:batch-convert"
     name="batch-convert"
     xmlns:p="http://www.w3.org/ns/xproc"
     xmlns:c="http://www.w3.org/ns/xproc-step"
-    xmlns:cx="http://xmlcalabash.com/ns/extensions"
-    xmlns:sg="http://www.sgmlguru/ns/xproc/steps"
+    xmlns:sgproc="http://www.sgmlguru.org/ns/xproc/steps"
     xmlns:fc="http://educations.com/XmlImport"
     xmlns:ccproc="http://www.corbas.co.uk/ns/xproc/steps"
-    xmlns:pxf="http://exproc.org/proposed/steps/file"
-    version="1.0">
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:test="http://www.corbas.co.uk/ns/test"
+    version="3.0">
+    
+    <!-- XProc Tools -->
+    <p:import href="../xproc-tools/xproc/recursive-directory-list.xpl"/>
+    <!-- http://xml.corbas.co.uk/xml/xproc-tools/recursive-directory-list.xpl -->
+    <p:import href="../xproc-tools/xproc/load-sequence-from-file.xpl"/>
+    <!-- http://xml.corbas.co.uk/xml/xproc-tools/load-sequence-from-file.xpl -->
+    <p:import href="../xproc-tools/xproc/threaded-xslt.xpl"/>
+    <!-- http://xml.corbas.co.uk/xml/xproc-tools/threaded-xslt.xpl -->
+    
+    <!-- Step for saving debug output -->
+    <!--<p:import href="../xproc/save-debug.xpl"/>-->
+    <!-- http://www.sgmlguru/ns/xproc/steps/save-debug.xpl -->
+    
 
-    <!-- XSLTs -->
+    <!-- XSLTs from manifest -->
     <p:input port="manifest">
         <p:documentation>
             <p>The manifest file listing the XSLT steps used by the transformation.</p>
         </p:documentation>
     </p:input>
-
+    
+    <p:output port="result" sequence="true" serialization="map{'indent': true()}"/>
+    
+    
     <!-- Optional XSLT params -->
-    <p:input port="parameters" kind="parameter">
+    <p:option name="parameters" required="false" as="xs:string*">
         <p:documentation>
             <p>Optional parameters for the pipelined XSLT.</p>
         </p:documentation>
-    </p:input>
-
-
-    <p:output port="result" sequence="true">
-        <p:pipe port="result" step="last"/>
-    </p:output>
-
-
+    </p:option>
+    
     <!-- Input path -->
     <p:option name="input-base-uri">
         <p:documentation>
@@ -38,13 +48,13 @@
         </p:documentation>
     </p:option>
 
-    <p:option name="include-filter" select="'.xml'">
+    <p:option name="include-filter" select="'\.xml'" required="false">
         <p:documentation>
             <p>The file suffix of the input files to be converted. Leaving this empty will attempt to convert everything, so don't do it unless you know what you're doing.</p>
         </p:documentation>
     </p:option>
     
-    <p:option name="exclude-filter" select="''"/>
+    <p:option name="exclude-filter" required="false"/>
 
     <!-- Output base URI -->
     <p:option name="output-base-uri">
@@ -61,80 +71,65 @@
     </p:option>
 
     <!-- Output DOCTYPE SYSTEM identifier -->
-    <p:option name="doctype-system">
+    <p:option name="doctype-system" required="false" as="xs:string" select="''">
         <p:documentation>
             <p>Output DTD SYSTEM identifier.</p>
         </p:documentation>
     </p:option>
 
     <!-- Output DOCTYPE PUBLIC identifier -->
-    <p:option name="doctype-public">
+    <p:option name="doctype-public" required="false" as="xs:string" select="''">
         <p:documentation>
             <p>Output DTD PUBLIC identifier.</p>
         </p:documentation>
     </p:option>
+    
+    <p:option name="validate" required="false" select="false()" as="xs:boolean"/>
 
     <!-- Enable verbose output -->
-    <p:option name="verbose" select="'false'"/>
+    <p:option name="verbose" required="false" select="'false'"/>
 
     <!-- Enable debug output (intermediate results on pipeline) -->
     <p:option name="debug" select="'false'"/>
 
-    <!-- XProc Tools -->
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/recursive-directory-list.xpl"/>
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/load-sequence-from-file.xpl"/>
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/threaded-xslt.xpl"/>
-
-    <!-- Calabash extensions -->
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
-
-    <!-- Step for saving debug output -->
-    <p:import href="http://www.sgmlguru/ns/xproc/steps/save-debug.xpl"/>
-    
     
     <!-- Create output dir -->
-    <pxf:mkdir name="mkdir">
+    <p:file-mkdir name="mkdir">
         <p:with-option name="href" select="$output-base-uri"/>
-    </pxf:mkdir>
+    </p:file-mkdir>
     
     <!-- Get rid of the mkdir output -->
-    <p:sink>
-        <p:input port="source">
-            <p:pipe port="result" step="mkdir"/>
-        </p:input>
-    </p:sink>
+    <p:sink/>
 
 
     <!-- Input documents list -->
-    <ccproc:recursive-directory-list name="source-files">
+    <sgproc:recursive-directory-list name="source-files">
         <p:with-option name="path" select="$input-base-uri"/>
         <!-- Add @uri to c:file elements -->
         <p:with-option name="resolve" select="'true'"/>
         <p:with-option name="include-filter" select="$include-filter"/>
         <p:with-option name="exclude-filter" select="$exclude-filter"/>
-    </ccproc:recursive-directory-list>
+    </sgproc:recursive-directory-list>
     
     <!-- URI-encode the directory listing -->
     <p:xslt name="uri-encoded-sources">
-        <p:input port="source">
+        <p:with-input port="source">
             <p:pipe port="result" step="source-files"/>
-        </p:input>
-        <p:input port="stylesheet">
+        </p:with-input>
+        <p:with-input port="stylesheet">
             <p:document href="xslt/uri-encode-dir-listing.xsl"/>
-        </p:input>
-        <p:input port="parameters">
-            <p:pipe port="parameters" step="batch-convert"/>
-        </p:input>
+        </p:with-input>
     </p:xslt>
 
     <p:sink/>
 
 
     <!-- Load the XSLTs in the manifest as a sequence -->
-    <ccproc:load-sequence-from-file name="manifest-sequence">
-        <p:input port="source">
+    <ccproc:load-sequence-from-file
+        name="manifest-sequence">
+        <p:with-input port="source">
             <p:pipe port="manifest" step="batch-convert"/>
-        </p:input>
+        </p:with-input>
     </ccproc:load-sequence-from-file>
 
     <p:sink/>
@@ -142,19 +137,19 @@
 
     <!-- Transform documents -->
     <p:for-each name="transform-batch">
-
+        
+        <p:with-input select="//c:file">
+            <p:pipe port="result" step="uri-encoded-sources"/>
+        </p:with-input>
+        
         <p:output port="result" primary="true" sequence="true">
             <p:empty/>
         </p:output>
+        
 
-        <p:iteration-source select="//c:file">
-            <p:pipe port="result" step="uri-encoded-sources"/>
-        </p:iteration-source>
+        <p:variable name="uri" select="xs:string(/c:file/@uri)"/>
         
-        
-        <p:variable name="uri" select="/c:file/@uri"/>
-        
-        <p:variable name="filename" select="tokenize(/c:file/@uri,'/')[last()]"/>
+        <p:variable name="filename" select="tokenize($uri,'/')[last()]"/>
         
         <p:variable name="path" select="substring-before($uri,$filename)"/>
         
@@ -169,9 +164,10 @@
 
         <p:choose>
             <p:when test="$verbose='true'">
-                <cx:message>
+                <!--<cx:message>
                     <p:with-option name="message" select="concat('Transforming ', $uri)"/>
-                </cx:message>
+                </cx:message>-->
+                <p:identity message="{concat('Transforming ', $uri)}"/>
             </p:when>
             <p:otherwise>
                 <p:identity/>
@@ -185,35 +181,31 @@
 
         <!-- Transform using XSLTs loaded from manifest -->
         <ccproc:threaded-xslt name="conv">
-            <p:input port="source">
+            <p:with-input port="source">
                 <p:pipe port="result" step="load-document"/>
-            </p:input>
-            <p:input port="stylesheets">
+            </p:with-input>
+            <p:with-input port="stylesheets">
                 <p:pipe port="result" step="manifest-sequence"/>
-            </p:input>
-            <p:input port="parameters">
-                <p:pipe port="parameters" step="batch-convert"/>
-            </p:input>
+            </p:with-input>
+            <p:with-option name="parameters" select="$parameters"/>
             <p:with-option name="verbose" select="$verbose"/>
         </ccproc:threaded-xslt>
 
         <!-- This gives us an ID transform and href on secondary output (result-document in XSLT); the XSLT handles filenaming -->
         <p:xslt name="process-output">
-            <p:input port="source">
+            <p:with-input port="source">
                 <p:pipe port="result" step="conv"/>
-            </p:input>
-            <p:input port="stylesheet">
+            </p:with-input>
+            <p:with-input port="stylesheet">
                 <p:document href="xslt/process-doc.xsl"/>
-            </p:input>
-            <p:with-param name="input-base-uri" select="$input-base-uri">
+            </p:with-input>
+            <p:with-option
+                name="parameters"
+                select="map{'input-base-uri': $input-base-uri,
+                'input-file': $uri,
+                'output-base-uri': $output-base-uri}">
                 <p:pipe port="current" step="transform-batch"/>
-            </p:with-param>
-            <p:with-param name="input-file" select="$uri">
-                <p:pipe port="current" step="transform-batch"/>
-            </p:with-param>
-            <p:with-param name="output-base-uri" select="$output-base-uri">
-                <p:pipe port="current" step="transform-batch"/>
-            </p:with-param>
+            </p:with-option>
         </p:xslt>
 
         <!-- Get rid of the primary output; we only want the secondary -->
@@ -222,9 +214,9 @@
 
         <!-- Store the secondary output from transform (this is the actual output document) -->
         <p:for-each name="store-output">
-            <p:iteration-source>
+            <p:with-input>
                 <p:pipe port="secondary" step="process-output"/>
-            </p:iteration-source>
+            </p:with-input>
 
             <p:variable name="href" select="document-uri(/)">
                 <p:pipe port="secondary" step="process-output"/>
@@ -232,45 +224,58 @@
 
             <p:choose>
                 <p:when test="$verbose='true'">
-                    <cx:message>
+                    <!--<cx:message>
                         <p:with-option name="message" select="concat('Saving output to ', $href)"/>
-                    </cx:message>
+                    </cx:message>-->
+                    <p:identity message="{concat('Saving output to ', $href)}"/>
                 </p:when>
                 <p:otherwise>
                     <p:identity/>
                 </p:otherwise>
             </p:choose>
             
+            
             <p:choose>
+                
                 <!-- If no DTD -->
                 <p:when test="$doctype-system = '' and $doctype-public = ''">
                     
-                    <cx:message>
+                    <!--<cx:message>
                         <p:with-option
                             name="message"
                             select="'Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided'"/>
-                    </cx:message>
+                    </cx:message>-->
                     
-                    <p:store encoding="UTF-8" omit-xml-declaration="false" indent="false" cdata-section-elements="fc:field">
-                        <p:input port="source">
+                    <p:store
+                        message="Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided"
+                        serialization="map{'encoding': 'UTF-8',
+                        'omit-xml-declaration': false(),
+                        'indent': false()}">
+                        <p:with-input port="source">
                             <p:pipe port="current" step="store-output"/>
-                        </p:input>
+                        </p:with-input>
                         <p:with-option name="href" select="document-uri(/)">
                             <p:pipe port="current" step="store-output"/>
                         </p:with-option>
                     </p:store>
                 </p:when>
+                
                 <!-- If DTD -->
                 <p:otherwise>
-                    <p:store indent="false" cdata-section-elements="fc:field">
-                        <p:input port="source">
+                    <p:store
+                        message="Saving with DOCTYPE"
+                        serialization="map{'indent': false(),
+                        'doctype-public': $doctype-public,
+                        'doctype-system': $doctype-system,
+                        'cdata-section-elements': fc:field}">
+                        <p:with-input port="source">
                             <p:pipe port="current" step="store-output"/>
-                        </p:input>
+                        </p:with-input>
                         <p:with-option name="href" select="document-uri(/)">
                             <p:pipe port="current" step="store-output"/>
                         </p:with-option>
-                        <p:with-option name="doctype-system" select="$doctype-system"/>
-                        <p:with-option name="doctype-public" select="$doctype-public"/>
+                        <!--<p:with-option name="doctype-system" select="$doctype-system"/>
+                        <p:with-option name="doctype-public" select="$doctype-public"/>-->
                     </p:store>
                 </p:otherwise>
             </p:choose>
@@ -289,10 +294,10 @@
                     </p:with-option>
                 </p:load>
 
-                <p:store indent="false">
-                    <p:input port="source">
+                <p:store serialization="map{'indent': false()}">
+                    <p:with-input port="source">
                         <p:pipe port="result" step="orig-file"/>
-                    </p:input>
+                    </p:with-input>
                     <p:with-option
                         name="href"
                         select="concat($tmp-dir,'/debug/',$diff,'/',encode-for-uri($filename),'/0-',encode-for-uri($filename))">
@@ -300,26 +305,26 @@
                     </p:with-option>
                 </p:store>
 
-                <sg:save-debug>
-                    <p:input port="stylesheets">
+                <!--<sgproc:save-debug>
+                    <p:with-input port="stylesheets">
                         <p:pipe port="result" step="manifest-sequence"/>
-                    </p:input>
-                    <p:input port="intermediates">
+                    </p:with-input>
+                    <p:with-input port="intermediates">
                         <p:pipe port="intermediates" step="conv"/>
-                    </p:input>
+                    </p:with-input>
                     <p:with-option name="input-filename" select="encode-for-uri($filename)">
                         <p:pipe port="current" step="transform-batch"/>
                     </p:with-option>
                     <p:with-option name="tmp-dir" select="concat($tmp-dir,'/debug/',$diff)"/>
                     <p:with-option name="verbose" select="$verbose"/>
-                </sg:save-debug>
+                </sgproc:save-debug>-->
             </p:when>
 
             <p:otherwise>
                 <p:identity>
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:empty/>
-                    </p:input>
+                    </p:with-input>
                 </p:identity>
             </p:otherwise>
         </p:choose>
@@ -330,11 +335,18 @@
 
 
     <!-- We need an output so this will do -->
-    <p:identity name="last">
+    <!--<p:identity name="last">
         <p:input port="source">
             <p:pipe port="result" step="transform-batch"/>
         </p:input>
-    </p:identity>
+    </p:identity>-->
+    
+    
+    <!--<p:wrap-sequence name="merge-load" wrapper="test:sequence">
+        <p:with-input port="source">
+            <p:pipe port="result" step="manifest-sequence"/>
+        </p:with-input>
+    </p:wrap-sequence>-->
 
 
 </p:declare-step>
