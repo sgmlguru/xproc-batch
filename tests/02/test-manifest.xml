@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../xproc-tools/schemas/manifest.rng" type="application/xml" schematypens="http:/../relaxng.org/ns/structure/1.0"?>
+<manifest xmlns="http://www.corbas.co.uk/ns/transforms/manifest" xml:base=".">
+    
+    <group description="XLSX normalisation and cleanup steps" xml:base="./xslt/">
+        <item href="step1.xsl" description="To element one">
+            <meta name="param1" value="value1"/>
+        </item>
+        <item href="step2.xsl" description="To element two"/>
+        <item href="step3.xsl" description="To element three">
+            <meta name="param3A" value="value3A"/>
+            <meta name="param3B" value="value3B"/>
+        </item>
+        <item href="step4.xsl" description="To element four"/>
+    </group>
+    
+</manifest>
