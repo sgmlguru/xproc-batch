@@ -11,16 +11,15 @@
     xmlns:test="http://www.corbas.co.uk/ns/test"
     version="3.0">
     
+    <p:documentation>This converts an input file using a manifest listing XSLTs, optionally outputting debug output from each step.</p:documentation>
+    
     <!-- XProc Tools -->
-    <p:import href="../xproc-tools/xproc/recursive-directory-list.xpl"/>
-    <!-- http://xml.corbas.co.uk/xml/xproc-tools/recursive-directory-list.xpl -->
-    <p:import href="../xproc-tools/xproc/load-sequence-from-file.xpl"/>
-    <!-- http://xml.corbas.co.uk/xml/xproc-tools/load-sequence-from-file.xpl -->
-    <p:import href="../xproc-tools/xproc/threaded-xslt.xpl"/>
-    <!-- http://xml.corbas.co.uk/xml/xproc-tools/threaded-xslt.xpl -->
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/recursive-directory-list.xpl"/>
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/load-sequence-from-file.xpl"/>
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/threaded-xslt.xpl"/>
     
     <!-- Step for saving debug output -->
-    <!--<p:import href="../xproc/save-debug.xpl"/>-->
+    <p:import href="../xproc/save-debug.xpl"/>
     <!-- http://www.sgmlguru/ns/xproc/steps/save-debug.xpl -->
     
 
@@ -87,7 +86,7 @@
     <p:option name="validate" required="false" select="false()" as="xs:boolean"/>
 
     <!-- Enable verbose output -->
-    <p:option name="verbose" required="false" select="'false'"/>
+    <p:option name="verbose" required="false" select="'true'"/>
 
     <!-- Enable debug output (intermediate results on pipeline) -->
     <p:option name="debug" select="'false'"/>
@@ -164,9 +163,6 @@
 
         <p:choose>
             <p:when test="$verbose='true'">
-                <!--<cx:message>
-                    <p:with-option name="message" select="concat('Transforming ', $uri)"/>
-                </cx:message>-->
                 <p:identity message="{concat('Transforming ', $uri)}"/>
             </p:when>
             <p:otherwise>
@@ -224,9 +220,6 @@
 
             <p:choose>
                 <p:when test="$verbose='true'">
-                    <!--<cx:message>
-                        <p:with-option name="message" select="concat('Saving output to ', $href)"/>
-                    </cx:message>-->
                     <p:identity message="{concat('Saving output to ', $href)}"/>
                 </p:when>
                 <p:otherwise>
@@ -239,13 +232,6 @@
                 
                 <!-- If no DTD -->
                 <p:when test="$doctype-system = '' and $doctype-public = ''">
-                    
-                    <!--<cx:message>
-                        <p:with-option
-                            name="message"
-                            select="'Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided'"/>
-                    </cx:message>-->
-                    
                     <p:store
                         message="Saving without DOCTYPE - no PUBLIC or SYSTEM identifier provided"
                         serialization="map{'encoding': 'UTF-8',
@@ -274,8 +260,6 @@
                         <p:with-option name="href" select="document-uri(/)">
                             <p:pipe port="current" step="store-output"/>
                         </p:with-option>
-                        <!--<p:with-option name="doctype-system" select="$doctype-system"/>
-                        <p:with-option name="doctype-public" select="$doctype-public"/>-->
                     </p:store>
                 </p:otherwise>
             </p:choose>
@@ -293,6 +277,14 @@
                         <p:pipe port="current" step="transform-batch"/>
                     </p:with-option>
                 </p:load>
+                
+                <p:file-mkdir>
+                    <p:with-option name="href" select="concat($tmp-dir,'/debug/',$diff,'/',encode-for-uri($filename))"/>
+                </p:file-mkdir>
+                
+                <p:identity message="{concat($tmp-dir,'/debug/',$diff,'/',encode-for-uri($filename))}">
+                    <p:with-input></p:with-input>
+                </p:identity>
 
                 <p:store serialization="map{'indent': false()}">
                     <p:with-input port="source">
@@ -305,7 +297,7 @@
                     </p:with-option>
                 </p:store>
 
-                <!--<sgproc:save-debug>
+                <sgproc:save-debug>
                     <p:with-input port="stylesheets">
                         <p:pipe port="result" step="manifest-sequence"/>
                     </p:with-input>
@@ -317,7 +309,7 @@
                     </p:with-option>
                     <p:with-option name="tmp-dir" select="concat($tmp-dir,'/debug/',$diff)"/>
                     <p:with-option name="verbose" select="$verbose"/>
-                </sgproc:save-debug>-->
+                </sgproc:save-debug>
             </p:when>
 
             <p:otherwise>
@@ -332,21 +324,5 @@
         <p:sink/>
 
     </p:for-each>
-
-
-    <!-- We need an output so this will do -->
-    <!--<p:identity name="last">
-        <p:input port="source">
-            <p:pipe port="result" step="transform-batch"/>
-        </p:input>
-    </p:identity>-->
-    
-    
-    <!--<p:wrap-sequence name="merge-load" wrapper="test:sequence">
-        <p:with-input port="source">
-            <p:pipe port="result" step="manifest-sequence"/>
-        </p:with-input>
-    </p:wrap-sequence>-->
-
 
 </p:declare-step>

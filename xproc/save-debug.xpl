@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step
-    type="sg:save-debug"
+    type="sgproc:save-debug"
     name="save-debug"
     xmlns:cx="http://xmlcalabash.com/ns/extensions"
-    xmlns:sg="http://www.sgmlguru/ns/xproc/steps"
+    xmlns:sgproc="http://www.sgmlguru.org/ns/xproc/steps"
+    xmlns:fn="http://www.w3.org/2005/xpath-functions"
     xmlns:p="http://www.w3.org/ns/xproc"
     xmlns:c="http://www.w3.org/ns/xproc-step"
-    version="1.0">
+    version="3.0">
     
     
     <p:documentation>
@@ -46,42 +47,34 @@
     </p:option>
     
     <!-- Enable disable verbose output -->
-    <p:option name="verbose"/>
-    
-    <!-- Calabash extensions -->
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    <p:option name="verbose" required="false" select="'false'"/>
     
     
-    <!-- XSLT step names from manifest, needed for relevant debug step names -->
-    <p:for-each name="xslt-names">
-        <p:iteration-source>
-            <p:pipe port="stylesheets" step="save-debug"/>
-        </p:iteration-source>
-        
-        <p:output port="result" primary="true" sequence="true"/>
-        
-        <p:template>
-            <p:input port="source">
-                <p:pipe port="current" step="xslt-names"/>
-            </p:input>
-            <p:input port="template">
-                <p:inline>
-                    <c:result>{$uri}</c:result>
-                </p:inline>
-            </p:input>
-            <p:with-param name="uri" select="document-uri(/)"/>
-        </p:template>
-    </p:for-each>
+    <!-- XSLT filenames -->
+    <p:json-merge name="merged">
+        <p:with-input select="document-uri(/)">
+            <p:pipe step="save-debug" port="stylesheets"/>
+        </p:with-input>
+        <p:documentation>The input is JSON in need of merging</p:documentation>
+    </p:json-merge>
+    
+    <!-- Cast to XML -->
+    <p:cast-content-type name="caster" content-type="application/xml"/>
+    
+    <!-- Remove wrapper to produce a sequence -->
+    <p:filter name="filter" select="//*:string"/>
+    
     
     <!-- Wrap XSLT names and intermediate XSLT output in pairwise fashion -->
     <p:pack name="merge-name-content" wrapper="out">
-        <p:input port="source">
-            <p:pipe port="result" step="xslt-names"/>
-        </p:input>
-        <p:input port="alternate">
+        <p:with-input port="source">
+            <p:pipe port="result" step="filter"/>
+        </p:with-input>
+        <p:with-input port="alternate">
             <p:pipe port="intermediates" step="save-debug"/>
-        </p:input>
+        </p:with-input>
     </p:pack>
+    
     
     <!-- Intermediates output -->
     <p:for-each name="loop-debug">
@@ -89,36 +82,28 @@
             <p:empty/>
         </p:output>
         
-        <p:iteration-source>
-            <p:pipe port="result" step="merge-name-content"/>
-        </p:iteration-source>
-        
         <!-- Current input filename, used for debug output path -->
         <p:variable name="filename" select="$input-filename"/>
         
         <!-- current XSLT step filename -->
-        <p:variable name="xslt-name" select="tokenize(/out/c:result,'/')[last()]"/>
+        <p:variable name="xslt-name" select="tokenize(/out/*:string/text(),'/')[last()]"/>
         
         <!-- Debug output, full path -->
         <p:variable name="debug-out" select="concat($tmp-dir,'/',$filename,'/',p:iteration-position(),'-',$xslt-name,'.xml')"/>
         
         <p:choose>
             <p:when test="$verbose='true'">
-                <cx:message>
-                    <p:with-option
-                        name="message"
-                        select="concat('Saving debug output to ', $debug-out)"/>
-                </cx:message>
+                <p:identity message="{concat('Saving debug output to ', $debug-out)}"/>
             </p:when>
             <p:otherwise>
                 <p:identity/>
             </p:otherwise>
         </p:choose>
         
-        <p:store indent="false">
-            <p:input port="source" select="/*:out/*[2]">
+        <p:store serialization="map{'indent': false()}">
+            <p:with-input port="source" select="/*:out/*[2]">
                 <p:pipe port="current" step="loop-debug"/>
-            </p:input>
+            </p:with-input>
             <p:with-option name="href" select="$debug-out"/>
         </p:store>
         
