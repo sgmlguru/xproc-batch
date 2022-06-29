@@ -57,7 +57,7 @@
     </xd:doc>
     
     <xsl:template match="/">
-        <xsl:result-document href="{concat($output-base-uri,$diff,$filename)}">
+        <xsl:result-document href="{concat($output-base-uri,$diff,'/',$filename)}">
             <xsl:apply-templates select="node()" mode="PREPROCESS_SAVE"/>
         </xsl:result-document>
     </xsl:template>
