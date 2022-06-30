@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description
+    xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    stylesheet="../xslt/step4.xsl">
+    
+    <x:scenario label="When encountering a three element">
+        <x:context mode="STEP-4">
+            <three>...</three>
+        </x:context>
+        
+        <x:expect label="it should be converted to a four element">
+            <four>...</four>
+        </x:expect>
+    </x:scenario>
+    
+</x:description>

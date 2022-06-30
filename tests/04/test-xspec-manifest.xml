@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../xspec-tools/rng/xspec-manifest.rnc" type="application/relax-ng-compact-syntax"?>
+<tests
+    xmlns="http://www.sgmlguru.org/ns/xproc/steps"
+    manifest="./test-xproc-manifest.xml"
+    xml:base=".">
+    
+    <group description="">
+        <test xslt="xslt/step4.xsl" xspec="xspec/step4.xspec" description="Just a test"/>
+    </group>
+    
+</tests>
