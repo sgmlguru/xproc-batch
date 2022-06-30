@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <p:declare-step
-    type="sg:validate-with-schematron"
+    type="sgproc:validate-with-schematron"
     name="validate-with-schematron"
     xmlns:p="http://www.w3.org/ns/xproc"
     xmlns:c="http://www.w3.org/ns/xproc-step"
     xmlns:cx="http://xmlcalabash.com/ns/extensions"
     xmlns:sg="http://www.sgmlguru/ns/xproc/steps"
+    xmlns:sgproc="http://www.sgmlguru.org/ns/xproc/steps"
     xmlns:ccproc="http://www.corbas.co.uk/ns/xproc/steps"
     xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
-    version="1.0">
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    version="3.0">
+    
+    <!-- XProc Tools -->
+    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/recursive-directory-list.xpl"/>
 
     <!-- Schematron -->
     <p:input port="sch">
@@ -52,73 +57,53 @@
     <p:option name="validate" select="'true'"/>
 
 
-    <!-- XProc Tools -->
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/recursive-directory-list.xpl"/>
-
-    <!-- Calabash extensions -->
-    <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
+    
 
 
     <!-- Should we validate? -->
     <p:choose>
         <p:when test="$validate='true'">
             <!-- List input files -->
-            <ccproc:recursive-directory-list name="source-files">
+            <sgproc:recursive-directory-list name="source-files">
                 <p:with-option name="path" select="$input-base-uri"/>
                 <p:with-option name="resolve" select="'true'"/>
                 <p:with-option name="include-filter" select="$include-filter"/>
                 <p:with-option name="exclude-filter" select="$exclude-filter"/>
-            </ccproc:recursive-directory-list>
+            </sgproc:recursive-directory-list>
 
             <!-- Validate input -->
             <p:for-each name="schematron-loop">
+                
+                <p:with-input select="//c:file" pipe="result@source-files"/>
 
                 <p:output port="result" primary="true" sequence="true"/>
-
-                <p:iteration-source select="//c:file">
-                    <p:pipe port="result" step="source-files"/>
-                </p:iteration-source>
-
-                <p:variable name="file" select="/c:file/@uri"/>
+                
+                <p:variable name="file" select="xs:string(/c:file/@uri)"/>
 
                 <p:variable name="current-doc" select="/c:file/@name"/>
-
-                <cx:message>
-                    <p:with-option
-                        name="message"
-                        select="if ($validate='true')
-                        then (concat('Validating ',/c:file/@uri,' with Schematron'))
-                        else ()"/>
-                </cx:message>
-
+                
                 <!-- Load current input -->
-                <p:load name="current-input-doc">
+                <p:load
+                    name="current-input-doc"
+                    message="{if ($validate='true')
+                    then (concat('Validating ',/c:file/@uri,' with Schematron'))
+                    else ()}">
                     <p:with-option name="href" select="$file"/>
                 </p:load>
 
                 <p:validate-with-schematron name="schematron" assert-valid="false">
-                    <p:input port="schema">
+                    <p:with-input port="schema">
                         <p:pipe port="sch" step="validate-with-schematron"/>
-                    </p:input>
-                    <p:input port="parameters">
-                        <p:empty/>
-                    </p:input>
+                    </p:with-input>
                 </p:validate-with-schematron>
 
                 <p:sink/>
 
                 <p:identity name="errors">
-                    <p:input port="source">
-                        <p:pipe port="report" step="schematron"/>
-                    </p:input>
+                    <p:with-input port="source" pipe="report@schematron"/>
                 </p:identity>
-
-                <cx:message>
-                    <p:with-option name="message" select="/">
-                        <p:pipe port="report" step="schematron"/>
-                    </p:with-option>
-                </cx:message>
-
+                
+                
                 <!-- Uncomment to store SVRL XML -->
                 <!--<p:store>
                     <p:with-option
@@ -128,54 +113,49 @@
                         <p:pipe port="result" step="errors"/>
                     </p:input>
                 </p:store>-->
-
+                
+                <p:variable
+                    name="count"
+                    select="count(.//svrl:failed-assert)"
+                    pipe="report@schematron"/>
+                
+                
                 <p:choose>
-
-                    <p:variable name="count" select="count(.//svrl:failed-assert)">
-                        <p:pipe port="report" step="schematron"/>
-                    </p:variable>
-
                     <p:when test="$count &gt; 0">
-
-                        <cx:message>
-                            <p:with-option
-                               name="message"
-                               select="concat('Saving Schematron validation results to ', $reports-dir,'/', 'sch',$exclude-filter, replace($current-doc,'\.xml','.htm'))"/>
-                        </cx:message>
-
-                        <p:xslt name="svrl-html">
-                            <p:input port="source">
+                        
+                        <p:output port="result" primary="true" sequence="true"/>
+                        
+                        <p:xslt
+                            name="svrl-html"
+                            message="{concat('Saving Schematron validation results to ', $reports-dir,'/', 'sch',$exclude-filter, replace($current-doc,'\.xml','.htm'))}">
+                            <p:with-input port="source">
                                 <p:pipe port="result" step="errors"/>
-                            </p:input>
-                            <p:input port="stylesheet">
+                            </p:with-input>
+                            <p:with-input port="stylesheet">
                                 <p:document href="xslt/svrl2html.xsl"/>
-                            </p:input>
-                            <p:input port="parameters">
-                                <p:empty/>
-                            </p:input>
+                            </p:with-input>
                         </p:xslt>
 
                         <p:store>
                             <p:with-option
                                 name="href"
                                 select="replace(concat($reports-dir,'/', 'sch',$exclude-filter, $current-doc),'\.xml','.htm')"/>
-                            <p:input port="source">
-                                <p:pipe port="result" step="svrl-html"/>
-                            </p:input>
+                            <p:with-input
+                                port="source"
+                                pipe="result@svrl-html"/>
                         </p:store>
                     </p:when>
 
                     <p:otherwise>
+                        <p:output port="result" primary="true" sequence="true"/>
                         <p:sink/>
                     </p:otherwise>
                 </p:choose>
-
-
-
+                
                 <p:identity>
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:empty/>
-                    </p:input>
+                    </p:with-input>
                 </p:identity>
 
             </p:for-each>
@@ -183,9 +163,9 @@
 
         <p:otherwise>
             <p:identity>
-                <p:input port="source">
+                <p:with-input port="source">
                     <p:empty/>
-                </p:input>
+                </p:with-input>
             </p:identity>
         </p:otherwise>
     </p:choose>
