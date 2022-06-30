@@ -11,4 +11,11 @@
         </sch:rule>
     </sch:pattern>
     
+    <sch:pattern>
+        <sch:title>Test for an attribute @three</sch:title>
+        <sch:rule context="four">
+            <sch:assert test="not(@three)">There is a three attribute.</sch:assert>
+        </sch:rule>
+    </sch:pattern>
+    
 </sch:schema>
