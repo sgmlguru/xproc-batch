@@ -28,7 +28,7 @@
         <p:with-option name="tmp-dir" select="resolve-uri('./tmp')"/>
         <p:with-option name="output-base-uri" select="resolve-uri('./tmp/out')"/>
         <p:with-option name="validate" select="false()"/>
-        <!--<p:with-option name="verbose" select="'true'"/>-->
+        <p:with-option name="verbose" select="'true'"/>
         <p:with-option name="debug" select="'true'"/>
     </sgproc:batch-convert>
     
