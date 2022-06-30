@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description
     xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:__x="http://www.w3.org/1999/XSL/TransformAliasAlias"
     stylesheet="../xslt/step4.xsl">
     
     <x:scenario label="When encountering a three element">
@@ -8,8 +10,8 @@
             <three>...</three>
         </x:context>
         
-        <x:expect label="it should be converted to a four element">
-            <four>...</four>
+        <x:expect label="it should be converted to a four element with a five in it">
+            <four>...<five/></four>
         </x:expect>
     </x:scenario>
     
