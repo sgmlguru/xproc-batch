@@ -54,7 +54,7 @@
     </p:option>
 
     <!-- Enable validation -->
-    <p:option name="validate" select="'true'"/>
+    <p:option name="validate" select="'false'"/>
 
 
     
@@ -109,9 +109,9 @@
                     <p:with-option
                         name="href"
                         select="concat($reports-dir,'/', 'sch',$exclude-filter, $current-doc)"/>
-                    <p:input port="source">
+                    <p:with-input port="source">
                         <p:pipe port="result" step="errors"/>
-                    </p:input>
+                    </p:with-input>
                 </p:store>-->
                 
                 <p:variable
