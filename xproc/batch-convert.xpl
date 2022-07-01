@@ -54,6 +54,8 @@
     </p:option>
     
     <p:option name="exclude-filter" required="false"/>
+    
+    <p:option name="root-filter" required="false" select="'[\W\w]*'" as="xs:string"/>
 
     <!-- Output base URI -->
     <p:option name="output-base-uri">
@@ -137,7 +139,7 @@
     <!-- Transform documents -->
     <p:for-each name="transform-batch">
         
-        <p:with-input select="//c:file">
+        <p:with-input select="//c:file[matches(name(doc(@uri)/*), '^' || $root-filter || '$')]">
             <p:pipe port="result" step="uri-encoded-sources"/>
         </p:with-input>
         
@@ -145,7 +147,7 @@
             <p:empty/>
         </p:output>
         
-
+        
         <p:variable name="uri" select="xs:string(/c:file/@uri)"/>
         
         <p:variable name="filename" select="tokenize($uri,'/')[last()]"/>
@@ -159,6 +161,10 @@
                 <p>This is the diff between the base input URI and any subfolders the input files may be placed in.</p>
             </p:documentation>
         </p:variable>
+        
+        
+        <p:variable name="root-name" select="name(doc($uri)/*)"/>
+        <p:identity message="Filtering on root expression: {$root-name}"/>
         
 
         <p:choose>
