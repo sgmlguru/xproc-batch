@@ -70,6 +70,8 @@
     </p:option>
 
     <p:option name="exclude-filter" required="false" as="xs:string?"/>
+    
+    <p:option name="root-filter" required="false" as="xs:string?" select="'[\w\W]*'"/>
 
     <!-- Output -->
     <p:option name="output-base-uri" required="true">
@@ -139,6 +141,7 @@
         <p:with-option name="parameters" select="$parameters"/>
         <p:with-option name="include-filter" select="$include-filter"/>
         <p:with-option name="exclude-filter" select="$exclude-filter"/>
+        <p:with-option name="root-filter" select="$root-filter"/>
         <p:with-option name="input-base-uri" select="$input-base-uri"/>
         <p:with-option name="output-base-uri" select="$output-base-uri"/>
         <p:with-option name="tmp-dir" select="$tmp-dir"/>
