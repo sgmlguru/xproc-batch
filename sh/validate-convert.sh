@@ -41,20 +41,20 @@ $JAVA_AGENT \
 -config=$MORGANA_HOME/config.xml \
 $ROOT/tests/validate-convert.xpl \
 -catalogs=$ROOT/catalogs/catalog.xml \
--input:manifest=$XSLT_MANIFEST
--input:sch=$SCH
--option:input-base-uri=$SOURCES
--option:output-base-uri=$TMP/out
--option:reports-dir=$TMP/out
--option:tmp-dir=$TMP
--option:doctype-public=$PUBLIC_ID
--option:doctype-system=$SYSTEM_ID
--option:xspec-manifest-uri=$XSPEC_MANIFEST
--option:verbose=$VERBOSE
--option:debug=$DEBUG
--option:dtd-validate-input=$DTD_VALIDATE_INPUT
--option:dtd-validate-output=$DTD_VALIDATE_OUTPUT
--option:sch-validate-output=$SCH_VALIDATE_OUTPUT
--option:run-xspecs=$RUN_XSPECS
+-input:manifest=$XSLT_MANIFEST \
+-input:sch=$SCH \
+-option:input-base-uri=$SOURCES \
+-option:output-base-uri=$TMP/out \
+-option:reports-dir=$TMP/out \
+-option:tmp-dir=$TMP  \
+-option:doctype-public=$PUBLIC_ID \
+-option:doctype-system=$SYSTEM_ID \
+-option:xspec-manifest-uri=$XSPEC_MANIFEST \
+-option:verbose=$VERBOSE \
+-option:debug=$DEBUG \
+-option:dtd-validate-input=$DTD_VALIDATE_INPUT \
+-option:dtd-validate-output=$DTD_VALIDATE_OUTPUT \
+-option:sch-validate-output=$SCH_VALIDATE_OUTPUT \
+-option:run-xspecs=$RUN_XSPECS \
 
 # "$@"
