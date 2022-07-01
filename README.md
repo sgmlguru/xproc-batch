@@ -1,27 +1,32 @@
 # README
 
-This repository contains XProc and XSLT scripts to run an XSLT-based pipeline converting XML to XML in batch. It is based on, and relies on, Nic Gibson's [XProc Tools](https://github.com/nic-gibson/xproc-tools), included here as a submodule.
+This repository contains XProc and XSLT scripts to run an XSLT-based pipeline converting XML to XML in batch. It is based on Nic Gibson's [XProc Tools](https://github.com/nic-gibson/xproc-tools).
+
+Previous versions of this repo were written in XProc 1.0 and relied on Nic's repo and Norm Walsh's XML Calabash XProc engine. The current version is a rewrite in XProc 3.0, with a forked XProc 3.0 version of XProc Tools and Achim Berndzen's Morgana XProc-IIIse XProc 3.0 engine. It's still a work in progress, and some features do not yet work.
 
 There is also an XQuery module and a test XQuery calling the functions in the module, both intended to run in eXist-DB. These, just like the XProc scripts, are intended to run an XSLT pipeline.
 
-In addition to the tools, you'll need a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
+XProc Tools define, and XProc Batch use, a *manifest file* listing your XSLT steps, as well as the XSLT stylesheets themselves. The manifest is an XML file adhering to `xproc-tools/schemas/manifest.rng`.
 
-XProc Batch also allows you to run any XSpec unit tests you write for your individual XSLT stylesheets alongside the XSLT pipeline by listing them in an XSpec test manifest file similar to the XSLT manifest. The XSpec manifest format is described in `xspec-tools/rng/xspec-manifest.rnc`.
+**Not yet functional in XProc 3.0!** XProc Batch also allows you to run XSpec unit tests you've written for your individual XSLT stylesheets alongside the XSLT pipeline by listing them in an XSpec test manifest file similar to the XSLT manifest. The XSpec manifest format is described in `xspec-tools/rng/xspec-manifest.rnc`.
 
-An example pipeline, complete with a pipeline manifest XSLT stylesheets, a test manifest and XSpec unit test examples, is available at [XSLT Pipelines](https://github.com/sgmlguru/xslt-pipelines).
+**XProc 1.0 only!** An example pipeline, complete with a pipeline manifest XSLT stylesheets, a test manifest and XSpec unit test examples, is available at [XSLT Pipelines](https://github.com/sgmlguru/xslt-pipelines).
+
+XProc Batch and XProc Tools both includes a number of test pipelines to check various features and functionality.
 
 
 ## Requirements
 
-At the moment, you'll need one of the following: 
+You'll need one of the following: 
 
-* A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions. I am going to address this at some point, probably when moving everything to XProc 3.0.
+* **XProc 3.0 only!** [MorganaXProc-IIIse](https://www.xml-project.com/morganaxproc-iii/) in version 0.9.16 or later.
+* **XProc 1.0 only!** A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions.
 * An [eXist-DB XML database](http://exist-db.org/exist/apps/homepage/index.html), version 5.2 or later.
 
 
 ## Running Pipelines via XProc
 
-Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course.
+Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course. For shell script examples, see `sh/` - `sh/validate-convert.sh` illustrates how to run `xproc/validate-convert.xpl` in XProc 3.0.
 
 For example, let's say this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets at `/home/ari/Documents/repos/xlsx2xml`. There is also a project folder on the local file system containing sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
 
