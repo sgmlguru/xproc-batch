@@ -10,10 +10,10 @@ $SYSTEM_ID=$6
 $XSPEC_MANIFEST=$7 # XSpec manifest file
 VERBOSE=$8 # Verbose output? true/false
 DEBUG=$9 # Output debug? true/false
-DTD_VALIDATE_INPUT=$10 # Validate input
-DTD_VALIDATE_OUTPUT=$11 # Validate output
-SCH_VALIDATE_OUTPUT=$12 # Validate output with Schematron
-RUN_XSPECS=$13 # Run XSpecs - leave to false now!
+DTD_VALIDATE_INPUT=$10 # Validate input true/false
+DTD_VALIDATE_OUTPUT=$11 # Validate output true/false
+SCH_VALIDATE_OUTPUT=$12 # Validate output with Schematron true/false
+RUN_XSPECS=$13 # Run XSpecs - true/false but leave to false now!
 
 ROOT=`cd $(dirname $(realpath -s $0))/..; pwd`
 
