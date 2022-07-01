@@ -20,15 +20,89 @@ XProc Batch and XProc Tools both includes a number of test pipelines to check va
 You'll need one of the following: 
 
 * **XProc 3.0 only!** [MorganaXProc-IIIse](https://www.xml-project.com/morganaxproc-iii/) in version 0.9.16 or later.
-* **XProc 1.0 only!** A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc scripts rely on Calabash extensions.
+* **XProc 1.0 only!** A recent version of [XML Calabash 1.x.x](https://xmlcalabash.com/). Morgana XProc 1.x won't work because the XProc 1.0 scripts rely on Calabash extensions.
 * An [eXist-DB XML database](http://exist-db.org/exist/apps/homepage/index.html), version 5.2 or later.
 
 
-## Running Pipelines via XProc
+## Running Pipelines
 
-Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course. For shell script examples, see `sh/` - `sh/validate-convert.sh` illustrates how to run `xproc/validate-convert.xpl` in XProc 3.0.
+Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or an XProc that calls it, using a shell script that sets up your conversion inputs and options. It's possible to run it from *oXygen*, too, of course. For shell script examples, see the `sh/` directory.
 
-For example, let's say this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets at `/home/ari/Documents/repos/xlsx2xml`. There is also a project folder on the local file system containing sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
+
+### Running Pipelines in XProc 3.0
+
+There is a shell script, `validate-convert.sh`, that shows how to run an XSLT pipeline in XProc 3.0 and MorganaXProc-IIIse. It looks like this:
+
+```
+#!/bin/sh
+# PROJECT=`cd $1; pwd`
+
+XSLT_MANIFEST=$1 # Path to XSLT manifest XML
+SCH=$2 # Schematron for output
+$SOURCES=$3 # Path to sources
+$TMP=$4 # Output base
+$PUBLIC_ID=$5
+$SYSTEM_ID=$6
+$XSPEC_MANIFEST=$7 # XSpec manifest file
+VERBOSE=$8 # Verbose output? true/false
+DEBUG=$9 # Output debug? true/false
+DTD_VALIDATE_INPUT=$10 # Validate input true/false
+DTD_VALIDATE_OUTPUT=$11 # Validate output true/false
+SCH_VALIDATE_OUTPUT=$12 # Validate output with Schematron true/false
+RUN_XSPECS=$13 # Run XSpecs - true/false but leave to false now!
+
+ROOT=`cd $(dirname $(realpath -s $0))/..; pwd`
+
+MORGANA_HOME=/home/ari/MorganaXProc-IIIse-0.9.16-beta
+MORGANA_LIB=$MORGANA_HOME/MorganaXProc-IIIse_lib/*
+
+#Settings for JAVA_AGENT: Only for Java 8 we have to use -javaagent.
+JAVA_AGENT=""
+
+JAVA_VER=$(java -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*".*/\1\2/p;')
+
+if [ $JAVA_VER = "18" ]
+then
+    JAVA_AGENT=-javaagent:$MORGANA_HOME/MorganaXProc-IIIse_lib/quasar-core-0.7.9.jar
+fi
+
+# All related jars are expected to be in $MORGANA_LIB. For externals jars: Add them to $CLASSPATH
+CLASSPATH=$MORGANA_LIB:$MORGANA_HOME/MorganaXProc-IIIse.jar
+
+echo "Running validate-convert.xpl..."
+
+java \
+$JAVA_AGENT \
+-cp $CLASSPATH com.xml_project.morganaxproc3.XProcEngine \
+-config=$MORGANA_HOME/config.xml \
+$ROOT/tests/validate-convert.xpl \
+-catalogs=$ROOT/catalogs/catalog.xml \
+-input:manifest=$XSLT_MANIFEST \
+-input:sch=$SCH \
+-option:input-base-uri=$SOURCES \
+-option:output-base-uri=$TMP/out \
+-option:reports-dir=$TMP/out \
+-option:tmp-dir=$TMP  \
+-option:doctype-public=$PUBLIC_ID \
+-option:doctype-system=$SYSTEM_ID \
+-option:xspec-manifest-uri=$XSPEC_MANIFEST \
+-option:verbose=$VERBOSE \
+-option:debug=$DEBUG \
+-option:dtd-validate-input=$DTD_VALIDATE_INPUT \
+-option:dtd-validate-output=$DTD_VALIDATE_OUTPUT \
+-option:sch-validate-output=$SCH_VALIDATE_OUTPUT \
+-option:run-xspecs=$RUN_XSPECS \
+
+# "$@"
+
+```
+
+This is self-explanatory, especially if you choose to read the inline comments. Importantly, please see the `tests/` directory for limited examples.
+
+
+### Running Pipelines in XProc 1.0
+
+Let's say this repository lives at `/home/ari/Documents/repos/xproc-batch` and the repository with the XSLT manifest and stylesheets at `/home/ari/Documents/repos/xlsx2xml`. There is also a project folder on the local file system containing sources files to be converted at `/home/ari/Documents/projects/colleges/sources`.
 
 FInally, we'll assume that XML Calabash is unpacked to `/home/ari/xmlcalabash-1.1.30-99/`.
 
@@ -94,7 +168,7 @@ projects/colleges
 The output is stored in `tmp/out`.
 
 
-## Running Pipelines via eXist-DB
+### Running Pipelines via eXist-DB
 
 If XProc is not your thing, you can also run the XSLT pipeline from XQuery in eXist-DB.
 
