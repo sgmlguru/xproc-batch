@@ -31,7 +31,7 @@ Normally, you'll want to run the XProc script `xproc/validate-convert.xpl`, or a
 
 ### Running Pipelines in XProc 3.0
 
-There is a shell script, `validate-convert.sh`, that shows how to run an XSLT pipeline in XProc 3.0 and MorganaXProc-IIIse. It looks like this:
+There is a shell script, `validate-convert.sh`, that shows how to run an XSLT pipeline in XProc 3.0 and MorganaXProc-IIIse, modelled after Morgana's default shell script:
 
 ```
 #!/bin/sh
@@ -148,7 +148,12 @@ You might also want the output to validate against a DTD. Adding `doctype-public
 
 Leave out the `--input sch=...` line and you don't have to include a Schematron file. Similarly, leave out `xspec-manifest-uri=...` and you don't have to include an XSpec manifest file.
 
-The XProc script will generate an output structure like so:
+
+### Input and Output
+
+The XProc 1.0 implementation tended to assume an input directory `$PROJECT/sources` and place its output in `$PROJECT/tmp` subfolders. Neither is necessary, strictly speaking, as you can simply edit the calling shell script to what you want.
+
+Anyway, by default XProc Batch will generate an output structure like so:
 
 ```
 projects/colleges
@@ -161,8 +166,6 @@ projects/colleges
                 (step debug XML)
             reports
                 (validation reports)
-            xml
-                (normalised XML for spreadsheets - this pipeline only)
 ```
 
 The output is stored in `tmp/out`.
