@@ -3,11 +3,11 @@
 
 XSLT_MANIFEST=$1 # Path to XSLT manifest XML
 SCH=$2 # Schematron for output
-$SOURCES=$3 # Path to sources
-$TMP=$4 # Output base
-$PUBLIC_ID=$5 # PUBLIC ID for output DTD
-$SYSTEM_ID=$6 # SYSTEM ID for output DTD
-$XSPEC_MANIFEST=$7 # XSpec manifest file
+SOURCES=$3 # Path to sources
+TMP=$4 # Output base
+PUBLIC_ID=$5 # PUBLIC ID for output DTD
+SYSTEM_ID=$6 # SYSTEM ID for output DTD
+XSPEC_MANIFEST=$7 # XSpec manifest file
 VERBOSE=$8 # Verbose output? true/false
 DEBUG=$9 # Output debug? true/false
 DTD_VALIDATE_INPUT=$10 # Validate input true/false
