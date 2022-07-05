@@ -47,13 +47,13 @@
         </p:documentation>
     </p:option>
 
-    <p:option name="include-filter" select="'\.xml'" required="false">
+    <p:option name="include-filter" as="xs:string?" required="false">
         <p:documentation>
             <p>The file suffix of the input files to be converted. Leaving this empty will attempt to convert everything, so don't do it unless you know what you're doing.</p>
         </p:documentation>
     </p:option>
     
-    <p:option name="exclude-filter" required="false"/>
+    <p:option name="exclude-filter" as="xs:string?" required="false"/>
     
     <p:option name="root-filter" required="false" select="'[\W\w]*'" as="xs:string"/>
 
