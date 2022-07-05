@@ -57,7 +57,7 @@
     </p:option>
 
     <!-- Input path -->
-    <p:option name="input-base-uri" required="true">
+    <p:option name="input-base-uri" required="true" as="xs:string">
         <p:documentation>
             <p>Source document(s) URI. Every document ending with suffix <em>$include-filter</em> in this folder and its subfolders is transformed.</p>
         </p:documentation>
@@ -74,21 +74,21 @@
     <p:option name="root-filter" required="false" as="xs:string?" select="'[\w\W]*'"/>
 
     <!-- Output -->
-    <p:option name="output-base-uri" required="true">
+    <p:option name="output-base-uri" required="true" as="xs:string">
         <p:documentation>
             <p>Output URI for the transformed files.</p>
         </p:documentation>
     </p:option>
 
     <!-- Reports -->
-    <p:option name="reports-dir" required="true">
+    <p:option name="reports-dir" required="true" as="xs:string">
         <p:documentation>
             <p>URI for validation reports.</p>
         </p:documentation>
     </p:option>
 
     <!-- Tmp -->
-    <p:option name="tmp-dir" required="true">
+    <p:option name="tmp-dir" required="true" as="xs:string">
         <p:documentation>
             <p>URI for debug (intermediate result) files.</p>
         </p:documentation>
@@ -153,7 +153,7 @@
 
 
     <!-- Validate the output -->
-    <sgproc:validate-input>
+    <sgproc:validate-input p:depends="batch">
         <p:with-option name="input-base-uri" select="$output-base-uri"/>
         <p:with-option name="reports-dir" select="concat($reports-dir,'/target/dtd-validation')"/>
         <p:with-option name="validate" select="$dtd-validate-output"/>
@@ -188,7 +188,7 @@
     
     
     <!-- Validate output against Schematron -->
-    <sgproc:validate-with-schematron cx:depends-on="batch">
+    <sgproc:validate-with-schematron p:depends="batch">
         <p:with-input port="sch">
             <p:pipe port="sch" step="validate-convert"/>
         </p:with-input>
