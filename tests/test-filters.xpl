@@ -19,7 +19,7 @@
         <p:with-input port="manifest" href="05/test-manifest.xml"/>
         <p:with-input port="sch" href="sch/test-para.sch"/>
         <p:with-option name="input-base-uri" select="resolve-uri('./05/sources')"/>
-        <!--<p:with-option name="include-filter" select="'\.xml'"/>-->
+        <p:with-option name="include-filter" select="'\.xml'"/>
         <p:with-option name="output-base-uri" select="resolve-uri('./05/tmp/out')"/>
         <p:with-option name="reports-dir" select="resolve-uri('./05/tmp/reports')"/>
         <p:with-option name="tmp-dir" select="resolve-uri('./05/tmp')"/>
