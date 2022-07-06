@@ -7,7 +7,7 @@
     type="sgproc:test-validate-convert"
     version="3.0">
     
-    <p:documentation>Test validate-convert step</p:documentation>
+    <p:documentation>Test validate-convert step filters to include only XML files and filter on root element "doc"</p:documentation>
     
     
     <p:import href="../xproc/validate-convert.xpl"/>
