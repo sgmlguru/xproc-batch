@@ -148,6 +148,11 @@
         </p:output>
         
         
+        <!-- Input URI may use a protocol -->
+        <p:variable
+            name="local-input-base-uri"
+            select="replace($input-base-uri,'^([a-z]+://)?(.+)$','$2')"/>
+        
         <p:variable name="uri" select="xs:string(/c:file/@uri)"/>
         
         <p:variable name="filename" select="tokenize($uri,'/')[last()]"/>
@@ -156,14 +161,16 @@
         
         <p:variable name="current-file" select="concat($path,encode-for-uri($filename))"/>
         
-        <p:variable name="diff" select="substring-before(substring-after($uri,$input-base-uri),tokenize($uri,'/')[last()])">
+        <p:variable
+            name="diff"
+            select="substring-before(substring-after($uri,$local-input-base-uri),$filename)">
             <p:documentation>
                 <p>This is the diff between the base input URI and any subfolders the input files may be placed in.</p>
             </p:documentation>
         </p:variable>
         
-        
         <p:variable name="root-name" select="name(doc($uri)/*)"/>
+        
         <p:identity message="Filtering on root expression: {$root-name}"/>
         
 
