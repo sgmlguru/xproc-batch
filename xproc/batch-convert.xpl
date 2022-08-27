@@ -255,7 +255,7 @@
                 <!-- If DTD -->
                 <p:otherwise>
                     <p:store
-                        message="Saving with DOCTYPE"
+                        message="Saving with PUBLIC ID {$doctype-public} and SYSTEM ID {$doctype-system}"
                         serialization="map{'indent': false(),
                         'doctype-public': $doctype-public,
                         'doctype-system': $doctype-system,
