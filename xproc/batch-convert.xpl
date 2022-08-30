@@ -173,6 +173,8 @@
         
         <p:identity message="Filtering on root expression: {$root-name}"/>
         
+        <p:identity message="Input path diff is {$diff}"/>
+        
 
         <p:choose>
             <p:when test="$verbose='true'">
