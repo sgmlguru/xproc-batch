@@ -111,16 +111,6 @@
         <p:with-option name="include-filter" select="$include-filter"/>
         <p:with-option name="exclude-filter" select="$exclude-filter"/>
     </sgproc:recursive-directory-list>
-    
-    <!-- URI-encode the directory listing -->
-    <p:xslt name="uri-encoded-sources">
-        <p:with-input port="source">
-            <p:pipe port="result" step="source-files"/>
-        </p:with-input>
-        <p:with-input port="stylesheet">
-            <p:document href="xslt/uri-encode-dir-listing.xsl"/>
-        </p:with-input>
-    </p:xslt>
 
     <p:sink/>
 
@@ -140,7 +130,7 @@
     <p:for-each name="transform-batch">
         
         <p:with-input select="//c:file[matches(name(doc(@uri)/*), '^' || $root-filter || '$')]">
-            <p:pipe port="result" step="uri-encoded-sources"/>
+            <p:pipe port="result" step="source-files"/>
         </p:with-input>
         
         <p:output port="result" primary="true" sequence="true">
