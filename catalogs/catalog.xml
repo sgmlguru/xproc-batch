@@ -8,6 +8,8 @@ PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
   <!-- sgmlguru namespace -->
   <rewriteURI uriStartString="http://www.sgmlguru/ns/xproc/steps/" rewritePrefix="./../xproc/"/>
   
+  <rewriteURI uriStartString="http://www.sgmlguru/ns/xproc-tools/xproc/" rewritePrefix="../xproc-tools/xproc/"/>
+  
   <!-- XProc Tools -->
   <nextCatalog catalog="../xproc-tools/catalog.xml"/>
   
