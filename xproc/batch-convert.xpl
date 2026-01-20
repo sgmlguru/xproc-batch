@@ -14,7 +14,7 @@
     <p:documentation>This converts an input file using a manifest listing XSLTs, optionally outputting debug output from each step.</p:documentation>
     
     <!-- XProc Tools -->
-    <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/recursive-directory-list.xpl"/>
+    <p:import href="http://www.sgmlguru/ns/xproc-tools/xproc/recursive-directory-list.xpl"/>
     <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/load-sequence-from-file.xpl"/>
     <p:import href="http://xml.corbas.co.uk/xml/xproc-tools/xproc/threaded-xslt.xpl"/>
     
