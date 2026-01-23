@@ -146,10 +146,10 @@
                         </p:store>
                     </p:when>
 
-                    <p:otherwise>
+                    <!--<p:otherwise>
                         <p:output port="result" primary="true" sequence="true"/>
                         <p:sink/>
-                    </p:otherwise>
+                    </p:otherwise>-->
                 </p:choose>
                 
                 <p:identity>
