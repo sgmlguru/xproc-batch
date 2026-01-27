@@ -34,7 +34,7 @@
     
     
     <!-- Optional XSLT params -->
-    <p:option name="parameters" required="false" as="xs:string*">
+    <p:option name="parameters" required="false" as="map(xs:string, xs:string)?">
         <p:documentation>
             <p>Optional parameters for the pipelined XSLT.</p>
         </p:documentation>
